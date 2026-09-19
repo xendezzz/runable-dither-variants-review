@@ -229,7 +229,7 @@ html[data-theme=light] .ending .ds-button{background:#212121;color:#ededed}
  const setNav=open=>{root.classList.toggle('nav-open',open);toggle.setAttribute('aria-expanded',String(open));};
  setNav(new URLSearchParams(location.search).get('nav')!=='closed');
  toggle.addEventListener('click',()=>setNav(!root.classList.contains('nav-open')));
- document.querySelector('.mode-switch').addEventListener('click',event=>{event.currentTarget.search='?nav='+(root.classList.contains('nav-open')?'open':'closed')});
+ document.querySelector('.mode-switch').addEventListener('click',event=>{const version=new URLSearchParams(location.search).get('v');event.currentTarget.search='?nav='+(root.classList.contains('nav-open')?'open':'closed')+(version?'&v='+encodeURIComponent(version):'')});
  const panels=[...document.querySelectorAll('.scene')],showcase=document.querySelector('.showcase'),count=document.querySelector('.card-count');
  let current=0,scrollFrame=0;
  panels.forEach((p,i)=>{p.inert=i!==0;p.setAttribute('aria-hidden',i===0?'false':'true');});
