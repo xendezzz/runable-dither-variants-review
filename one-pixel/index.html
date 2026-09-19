@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Runable — 1 Pixel Dither Variant</title>
+<title>Runable — Dark 1 Pixel Dither Variant</title>
 <style>
 @font-face{font-family:'ID Grotesk';src:url('../shared/fonts/id-grotesk-medium.ttf') format('truetype');font-style:normal;font-weight:500;font-display:swap}
 @font-face{font-family:'ID Grotesk';src:url('../shared/fonts/id-grotesk-semibold.ttf') format('truetype');font-style:normal;font-weight:600;font-display:swap}
@@ -98,6 +98,22 @@ h2{max-width:100%;font-size:clamp(40px,3.65vw,56px);line-height:1.1}
   .background{bottom:16px;width:min(84%,420px)}
   .scene#webinars .background{bottom:12px;width:min(78%,390px)}
 }
+/* Runable Figma Tokens: dark surfaces, text, borders, and primary action. */
+:root{color-scheme:dark;--paper:#212121;--ink:#ededed;--muted:#c3c3c3;--ds-button:#00e7ff;--ds-button-text:#000}
+.fallback{filter:grayscale(1) contrast(1.55) brightness(.62)}
+.background::after{box-shadow:inset 0 -56px 98px rgba(33,33,33,.88)}
+.wash{background:linear-gradient(180deg,#212121 0%,#212121f2 36%,#212121c9 67%,#21212100 100%)}
+.subheading,.webinar-card-meta,.download-card-copy{color:var(--muted)}
+.ds-button:hover{background:#66f1ff;box-shadow:0 5px 18px rgba(0,231,255,.16)}
+.ds-button:active{background:#00b9cc}
+.carousel-shell::before{background:linear-gradient(90deg,rgba(33,33,33,.84),transparent)}
+.carousel-shell::after{background:linear-gradient(270deg,rgba(33,33,33,.84),transparent)}
+.webinar-cards,.downloads{scrollbar-color:#484c4d transparent}
+.webinar-card,.download-card{border-color:#ffffff0d;background:#171717;box-shadow:0 12px 36px rgba(0,0,0,.3)}
+.coming-soon{border-color:#ffffff0d;background:#303030;color:#c3c3c3}
+.os-icon img{filter:brightness(0) invert(1)}
+.notice{background:#303030;color:#ededed;box-shadow:0 12px 30px rgba(0,0,0,.35)}
+@media(max-width:800px){.background{border:1px solid #ffffff0d;box-shadow:0 16px 34px rgba(0,0,0,.35)}}
 @media(prefers-reduced-motion:reduce){.scene,.ds-button,.notice,.webinar-cards .webinar-card{transition:none}}
 </style>
 </head>
@@ -275,7 +291,7 @@ h2{max-width:100%;font-size:clamp(40px,3.65vw,56px);line-height:1.1}
       threshold+=0.0125*sin(u_time*4.3+uv.x*33.0-uv.y*17.0);
       float dotColor=step(threshold,luminance);
       float exposedLuma=clamp(dot(original,vec3(0.2126,0.7152,0.0722))*1.14+0.03,0.0,1.0);
-      vec3 monochrome=mix(mix(vec3(0.105,0.082,0.058),vec3(0.996,0.992,0.984),dotColor),vec3(exposedLuma),0.18);
+      vec3 monochrome=mix(mix(vec3(0.0784),vec3(0.9294),dotColor),vec3(exposedLuma*0.62+0.02),0.18);
       vec3 coloredDither=mix(mix(original*0.55,original,dotColor),min(original*1.12+vec3(0.02),vec3(1.0)),0.18);
       float edgeDither=(bayer(ditherCell+vec2(2.0,1.0))+0.5)/16.0-0.5;
       float radialProgress=clamp((distanceFromPointer+edgeDither*6.0*u_pixelRatio)/boundary,0.0,1.0);
