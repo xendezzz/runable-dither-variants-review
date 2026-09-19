@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Runable — Color Dither Variant</title>
+<style>
+@font-face{font-family:'ID Grotesk';src:url('../shared/fonts/id-grotesk-medium.ttf') format('truetype');font-style:normal;font-weight:500;font-display:swap}
+@font-face{font-family:'ID Grotesk';src:url('../shared/fonts/id-grotesk-semibold.ttf') format('truetype');font-style:normal;font-weight:600;font-display:swap}
+@font-face{font-family:'Satoshi';src:url('../shared/fonts/satoshi-400.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:'Satoshi';src:url('../shared/fonts/satoshi-500.woff2') format('woff2');font-style:normal;font-weight:500;font-display:swap}
+@font-face{font-family:'Hedvig Letters Serif';src:url('../shared/fonts/hedvig-letters-serif.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+:root{color-scheme:light;--paper:#fefdfb;--ink:#1b140e;--muted:#494743;--ds-button:#212121;--ds-button-text:#ededed;--feature-card-width:420px;--font-heading:'Hedvig Letters Serif',Georgia,serif;--font-ui:'ID Grotesk',Arial,sans-serif;--font-body:'Satoshi',Arial,sans-serif}
+*{box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-ui)}
+.stage{position:relative;width:100%;height:100svh;overflow:hidden;background:var(--paper)}
+.scene{position:absolute;inset:0;isolation:isolate;width:100%;height:100svh;overflow:hidden;background:var(--paper);opacity:0;filter:blur(20px);transform:scale(1.015);visibility:hidden;pointer-events:none;transition:opacity .62s ease,filter .85s ease,transform .85s ease,visibility 0s linear .85s}
+.scene.is-active{opacity:1;filter:blur(0);transform:scale(1);visibility:visible;pointer-events:auto;transition:opacity .72s ease,filter .85s ease,transform .85s ease,visibility 0s}
+.scene.is-leaving{opacity:0;filter:blur(24px);transform:scale(.987);visibility:visible;pointer-events:none}
+.background{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.fallback,.dither{position:absolute;inset:0;width:100%;height:100%}
+.fallback{display:block;object-fit:cover;filter:grayscale(1) contrast(1.55)}
+.background .dither{display:none}.background.ready .dither{display:block}.background.ready .fallback{display:none}
+.background::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 -56px 98px rgba(255,255,255,.75)}
+.wash{position:absolute;z-index:1;top:0;left:0;right:0;height:min(415px,52svh);pointer-events:none;background:linear-gradient(180deg,#fefdfb 0%,#fefdfbf2 36%,#fefdfbbd 67%,#fefdfb00 100%);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);-webkit-mask-image:linear-gradient(#000 0%,#000 54%,transparent 100%);mask-image:linear-gradient(#000 0%,#000 54%,transparent 100%)}
+.content{position:absolute;z-index:2;top:clamp(42px,7vh,88px);left:50%;display:flex;flex-direction:column;align-items:center;gap:22px;width:760px;max-width:calc(100% - 48px);transform:translateX(-50%);text-align:center}
+.copy{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%}
+h1,h2,p{margin:0}
+h1,h2{font-family:var(--font-heading);font-weight:400;letter-spacing:-.042em;text-wrap:balance}
+h1{max-width:720px;font-size:clamp(42px,4.3vw,64px);line-height:1.08}
+h2{max-width:100%;font-size:clamp(40px,3.65vw,56px);line-height:1.1}
+.subheading{width:495px;max-width:100%;color:#3f3c38;font:400 17px/1.5 var(--font-body);text-wrap:pretty}
+.content--webinars{top:clamp(26px,4.5vh,54px);gap:84px;width:min(1120px,calc(100% - 64px))}.content--webinars h2{max-width:640px}
+.content--desktop{top:clamp(30px,5svh,58px);left:50%;width:1000px;max-width:calc(100% - 48px);gap:84px;align-items:center;transform:translateX(-50%);text-align:center}.content--desktop h2{max-width:700px;font-size:clamp(40px,3.65vw,56px)}
+@media(min-width:801px){.scene#desktop-app .background{transform:translateY(280px);-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 120px);mask-image:linear-gradient(to bottom,transparent 0,#000 120px)}}
+@media(min-width:801px) and (max-height:700px){.scene#desktop-app .background{transform:translateY(350px)}}
+.ds-button{display:inline-flex;align-items:center;justify-content:center;gap:4px;min-height:36px;padding:6px 16px;border:0;border-radius:12px;background:var(--ds-button);color:var(--ds-button-text);font:500 14px/20px var(--font-ui);letter-spacing:0;text-decoration:none;white-space:nowrap;cursor:pointer;transition:background .2s ease,box-shadow .2s ease,transform .2s ease}
+.ds-button:hover{background:#303030;box-shadow:0 5px 14px rgba(20,20,20,.15);transform:translateY(-1px)}.ds-button:active{background:#141414;transform:translateY(0);box-shadow:none}.ds-button:focus-visible{outline:3px solid #00b9cc;outline-offset:3px}
+.carousel-shell{position:relative;isolation:isolate;width:100%}.carousel-shell::before,.carousel-shell::after{content:"";position:absolute;z-index:2;top:0;bottom:12px;width:clamp(34px,6vw,88px);pointer-events:none;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);transition:opacity .25s ease}.carousel-shell::before{left:0;background:linear-gradient(90deg,rgba(254,253,251,.76),transparent);-webkit-mask-image:linear-gradient(90deg,#000,transparent);mask-image:linear-gradient(90deg,#000,transparent)}.carousel-shell::after{right:0;background:linear-gradient(270deg,rgba(254,253,251,.76),transparent);-webkit-mask-image:linear-gradient(270deg,#000,transparent);mask-image:linear-gradient(270deg,#000,transparent)}.carousel-shell.at-start::before,.carousel-shell.at-end::after{opacity:0}
+.content--webinars .carousel-shell::before,.content--webinars .carousel-shell::after{content:none}
+.webinar-cards,.downloads{display:flex;flex-direction:row;gap:28px;width:100%;padding:0 0 12px;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:#ac9c8d transparent;touch-action:pan-x;text-align:left}
+.webinar-card{display:flex;flex:0 0 var(--feature-card-width);flex-direction:column;justify-content:space-between;gap:22px;min-height:250px;padding:28px 30px;border:1px solid rgba(105,88,70,.17);border-radius:18px;background:var(--paper);box-shadow:0 9px 30px rgba(24,15,8,.09);scroll-snap-align:start}
+.content--webinars .carousel-shell{width:min(100%,calc(var(--feature-card-width) + 48px))}
+.webinar-cards{position:relative;display:block;height:280px;padding:0;overflow:visible;touch-action:pan-y;scrollbar-width:none;cursor:grab}
+.webinar-cards .webinar-card{position:absolute;top:0;left:0;width:var(--feature-card-width);height:250px;min-height:0;transform-origin:center center;transition:transform .62s cubic-bezier(.2,.8,.2,1),opacity .45s ease,box-shadow .45s ease}
+.webinar-card[data-stack="front"]{z-index:3;opacity:1;transform:translate3d(0,0,0) scale(1);pointer-events:auto}
+.webinar-card[data-stack="middle"]{z-index:2;opacity:1;transform:translate3d(22px,12px,0) scale(.97);pointer-events:none}
+.webinar-card[data-stack="back"]{z-index:1;opacity:1;transform:translate3d(42px,24px,0) scale(.94);pointer-events:none}
+.webinar-nav{display:flex;justify-content:center;gap:12px;margin-top:16px}
+.deck-arrow{width:44px;height:44px;min-height:44px;padding:0;border-radius:12px}
+.deck-arrow svg{width:20px;height:20px;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.webinar-card h3{margin:0;color:var(--ink);font:400 30px/1.18 var(--font-heading);letter-spacing:-.025em;text-wrap:balance}
+.webinar-card-bottom{display:flex;flex-direction:column;align-items:flex-start;gap:14px}
+.webinar-card-meta{color:#635e57;font:400 15px/22px var(--font-body);letter-spacing:0}
+.notice{position:fixed;z-index:20;left:50%;bottom:max(22px,env(safe-area-inset-bottom));width:max-content;max-width:calc(100% - 36px);padding:11px 16px;border-radius:12px;background:#212121;box-shadow:0 12px 30px rgba(0,0,0,.16);color:#ededed;font:500 14px/20px var(--font-ui);text-align:center;opacity:0;pointer-events:none;transform:translate(-50%,12px);transition:opacity .2s ease,transform .2s ease}.notice.is-visible{opacity:1;transform:translate(-50%,0)}
+.content--desktop .carousel-shell{width:min(100%,calc(var(--feature-card-width) + var(--feature-card-width) + 28px))}
+.download-card{display:flex;flex:0 0 var(--feature-card-width);flex-direction:column;align-items:flex-start;justify-content:space-between;gap:22px;min-height:250px;padding:28px 30px;border:1px solid rgba(105,88,70,.17);border-radius:18px;background:rgba(254,253,251,.93);box-shadow:0 9px 30px rgba(24,15,8,.09);text-align:left;scroll-snap-align:start}
+.download-card-bottom{display:flex;flex-direction:column;align-items:flex-start;gap:14px;width:100%}.download-card-copy{color:#635e57;font:400 15px/22px var(--font-body);text-wrap:pretty}.download-card-bottom>.ds-button,.download-card-bottom>.coming-soon{width:100%;justify-content:center}
+.download-card-copy--windows{white-space:nowrap}
+.download-ident{display:flex;align-items:center;gap:12px}.os-icon{position:relative;display:grid;place-items:center;width:32px;height:32px;flex:none}.os-icon img{position:absolute;inset:4px;width:24px;height:24px}.os-icon--apple img{inset:5.3px;width:21.3px;height:21.3px}.os-icon.is-loaded .os-fallback{visibility:hidden}.os-fallback{color:var(--ink);font:500 26px/1 system-ui,sans-serif}.download-os{font:400 30px/1.18 var(--font-heading);letter-spacing:-.025em;white-space:nowrap}.coming-soon{display:inline-flex;align-items:center;min-height:36px;padding:6px 16px;border:1px solid rgba(105,88,70,.14);border-radius:12px;background:#eeece8;color:#635e57;font:500 14px/20px var(--font-ui);white-space:nowrap}
+@media(min-width:801px) and (max-width:1100px){
+  .content--desktop{width:calc(100% - 48px)}.content--desktop h2{font-size:clamp(38px,4.1vw,50px)}
+  :root{--feature-card-width:clamp(300px,43vw,390px)}
+}
+@media(max-width:800px){
+  :root{--feature-card-width:min(76vw,380px)}
+  .scene{height:100svh;min-height:0}
+  .background{top:auto;bottom:clamp(20px,5svh,58px);left:50%;width:min(88%,520px);height:auto;aspect-ratio:1672/941;transform:translateX(-50%);border-radius:18px;box-shadow:0 16px 34px rgba(40,28,18,.14)}
+  .scene#webinars .background{bottom:18px;width:min(80%,460px)}
+  .background::after{display:none}
+  .fallback{object-fit:cover}.dither{display:block}
+  .wash{display:none}
+  .content{top:clamp(26px,5svh,54px);gap:18px;width:calc(100% - 36px);max-width:560px}
+  .copy{gap:12px}
+  h1,h2{font-size:clamp(32px,6.8vw,45px);line-height:1.08;letter-spacing:-.035em}
+  h1{max-width:520px}.subheading{font-size:clamp(14px,2vw,16px);line-height:1.45;max-width:430px}
+  .content--webinars{top:clamp(22px,3.5svh,40px);gap:56px}
+  .content--webinars h2,.content--desktop h2{max-width:540px}
+  .carousel-shell::before,.carousel-shell::after{width:clamp(22px,7vw,42px)}
+  .webinar-cards,.downloads{gap:24px}.webinar-card{min-height:225px;padding:22px;gap:14px}.webinar-card h3{font-size:clamp(22px,4vw,27px)}.webinar-card-meta{font-size:14px;line-height:20px}
+  .webinar-cards{height:249px}.webinar-cards .webinar-card{height:225px}
+  .webinar-nav{margin-top:12px}.deck-arrow{width:40px;height:40px;min-height:40px}
+  .content--desktop{left:50%;width:calc(100% - 36px);max-width:520px;gap:56px;align-items:center;transform:translateX(-50%);text-align:center}
+  .content--desktop h2{font-size:clamp(32px,6.8vw,45px)}
+  .content--desktop .carousel-shell{width:100%}.download-card{min-height:225px;padding:22px;gap:14px}.download-os{font-size:clamp(22px,4vw,27px)}
+}
+@media(max-width:480px){
+  :root{--feature-card-width:calc(100vw - 78px)}
+  .content{width:calc(100% - 36px)}
+  .content--webinars{gap:52px}.content--desktop{gap:52px}.webinar-card{min-height:220px;padding:18px}.webinar-card h3{font-size:23px}.webinar-cards{height:244px}.webinar-cards .webinar-card{height:220px}
+  .download-card{min-height:220px;padding:18px}.download-os{font-size:23px}.download-card-copy--windows{font-size:clamp(12px,3.4vw,15px)}.os-icon{width:28px;height:28px}.os-icon img{inset:3px;width:22px;height:22px}.os-icon--apple img{inset:4px;width:20px;height:20px}
+}
+@media(max-width:360px),(max-height:640px) and (max-width:800px){
+  .content{top:18px;gap:12px}.copy{gap:9px}h1,h2{font-size:clamp(28px,8vw,34px)}.subheading{font-size:13px;line-height:1.38}
+  .content--webinars{top:16px;gap:36px}.webinar-card{min-height:205px;padding:15px}.webinar-card h3{font-size:20px}.webinar-card-bottom{gap:9px}
+  .content--desktop{gap:36px}.download-card{min-height:205px;padding:15px}.download-os{font-size:20px}
+  .webinar-cards{height:229px}.webinar-cards .webinar-card{height:205px}
+  .background{bottom:16px;width:min(84%,420px)}
+  .scene#webinars .background{bottom:12px;width:min(78%,390px)}
+}
+@media(prefers-reduced-motion:reduce){.scene,.ds-button,.notice,.webinar-cards .webinar-card{transition:none}}
+</style>
+</head>
+<body>
+<main class="stage" aria-label="Runable highlights">
+<section class="scene is-active" id="academy" aria-labelledby="academy-title">
+  <div class="background" aria-hidden="true"><img class="fallback" src="../shared/academy-scene.png" alt=""><canvas class="dither"></canvas></div>
+  <div class="wash" aria-hidden="true"></div>
+  <div class="content"><div class="copy"><h1 id="academy-title" tabindex="-1">Learn Runable by building something real</h1><p class="subheading">Master Runable through short, practical lessons—or join a live webinar and build alongside our team.</p></div><a class="ds-button" href="https://runable-academy.runable.site/">Explore Academy</a></div>
+</section>
+<section class="scene" id="webinars" aria-labelledby="webinars-title">
+  <div class="background" aria-hidden="true"><img class="fallback" src="../shared/live-webinars-scene.png" alt=""><canvas class="dither"></canvas></div>
+  <div class="wash" aria-hidden="true"></div>
+  <div class="content content--webinars"><h2 id="webinars-title" tabindex="-1">Watch ideas become real.<br>In one live session.</h2><div class="carousel-shell"><div class="webinar-cards" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Upcoming webinars">
+    <article class="webinar-card"><h3>Interactive Workshop: Transforming Concepts into Campaigns</h3><div class="webinar-card-bottom"><p class="webinar-card-meta">1 hour · Live Q&amp;A · Free of charge</p><button class="ds-button" type="button">Claim my spot</button></div></article>
+    <article class="webinar-card"><h3>Hands-on Session: From Concept to Campaign</h3><div class="webinar-card-bottom"><p class="webinar-card-meta">1 hour · Live Q&amp;A · Free of charge</p><button class="ds-button" type="button">Claim my spot</button></div></article>
+    <article class="webinar-card"><h3>Interactive Workshop: Transforming Concepts into Campaigns</h3><div class="webinar-card-bottom"><p class="webinar-card-meta">1 hour · Live Q&amp;A · Complimentary</p><button class="ds-button" type="button">Reserve my seat</button></div></article>
+  </div><nav class="webinar-nav" aria-label="Webinar cards"><button class="ds-button deck-arrow" type="button" data-direction="-1" aria-label="Previous webinar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m7 7-7-7 7-7"/></svg></button><button class="ds-button deck-arrow" type="button" data-direction="1" aria-label="Next webinar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></button></nav></div></div>
+</section>
+<section class="scene" id="desktop-app" aria-labelledby="desktop-title">
+  <div class="background" aria-hidden="true"><img class="fallback" src="../shared/desktop-app-approved.png" alt=""><canvas class="dither"></canvas></div>
+  <div class="wash" aria-hidden="true"></div>
+  <div class="content content--desktop">
+    <h2 id="desktop-title" tabindex="-1">Take Runable to your desktop.</h2>
+    <div class="carousel-shell"><div class="downloads" tabindex="0" aria-label="Download apps">
+      <div class="download-card">
+        <span class="download-ident"><span class="os-icon os-icon--apple"><span class="os-fallback" aria-hidden="true"></span><img src="../shared/apple-icon.svg" alt="" aria-hidden="true"></span><span class="download-os">macOS</span></span>
+        <div class="download-card-bottom"><p class="download-card-copy">Unlock Runable’s full potential on your desktop.</p><a class="ds-button" href="https://runable.com/download">Download</a></div>
+      </div>
+      <div class="download-card">
+        <span class="download-ident"><span class="os-icon"><span class="os-fallback" aria-hidden="true">⊞</span><img src="../shared/windows-icon.svg" alt="" aria-hidden="true"></span><span class="download-os">Windows</span></span>
+        <div class="download-card-bottom"><p class="download-card-copy download-card-copy--windows">We’re working hard on it.</p><span class="coming-soon">Coming Soon</span></div>
+      </div>
+    </div></div>
+  </div>
+</section>
+</main>
+<div class="notice" role="status" aria-live="polite" aria-atomic="true"></div>
+<script src="../shared/textures.js"></script>
+<script>
+(() => {
+  const panels=[...document.querySelectorAll('.scene')];
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+  let current=0,busy=false,touchStartX=0,touchStartY=0,touchCard=null,lastWheelNavigation=-Infinity;
+  const initial=panels.findIndex(panel=>location.hash==='#'+panel.id);
+  if(initial>0){panels[0].classList.remove('is-active');panels[initial].classList.add('is-active');current=initial;}
+  panels.forEach((panel,index)=>{panel.inert=index!==current;panel.setAttribute('aria-hidden',index===current?'false':'true');});
+  document.querySelectorAll('.os-icon img').forEach(img=>{const mark=()=>img.parentElement.classList.add('is-loaded');if(img.complete&&img.naturalWidth)mark();else img.addEventListener('load',mark,{once:true});});
+  const webinarDeck=document.querySelector('.webinar-cards');
+  const webinarCards=[...webinarDeck.querySelectorAll('.webinar-card')];
+  let activeWebinar=0,lastDeckWheel=-Infinity;
+  const updateWebinarDeck=()=>{
+    webinarCards.forEach((card,index)=>{
+      const position=(index-activeWebinar+webinarCards.length)%webinarCards.length;
+      card.dataset.stack=['front','middle','back'][position];
+      card.inert=position!==0;
+      card.setAttribute('aria-hidden',position===0?'false':'true');
+    });
+    webinarDeck.setAttribute('aria-label',`Upcoming webinars, card ${activeWebinar+1} of ${webinarCards.length}. Scroll sideways to switch cards.`);
+  };
+  const moveWebinar=direction=>{activeWebinar=(activeWebinar+direction+webinarCards.length)%webinarCards.length;updateWebinarDeck();};
+  document.querySelectorAll('.webinar-nav .deck-arrow').forEach(button=>{
+    button.addEventListener('click',()=>moveWebinar(Number(button.dataset.direction)));
+  });
+  webinarDeck.addEventListener('wheel',event=>{
+    if(event.ctrlKey)return;
+    const delta=Math.abs(event.deltaX)>3?event.deltaX:event.shiftKey?event.deltaY:0;
+    if(Math.abs(delta)<5)return;
+    event.preventDefault();event.stopPropagation();
+    const now=performance.now();if(now-lastDeckWheel<550)return;
+    lastDeckWheel=now;moveWebinar(delta>0?1:-1);
+  },{passive:false});
+  webinarDeck.addEventListener('keydown',event=>{
+    if(event.key!=='ArrowLeft'&&event.key!=='ArrowRight')return;
+    event.preventDefault();moveWebinar(event.key==='ArrowRight'?1:-1);
+  });
+  let mouseDeckStart=null;
+  webinarDeck.addEventListener('pointerdown',event=>{
+    if(event.pointerType!=='mouse'||event.target instanceof Element&&event.target.closest('button,a'))return;
+    mouseDeckStart={x:event.clientX,y:event.clientY};
+  });
+  window.addEventListener('pointerup',event=>{
+    if(!mouseDeckStart)return;
+    const dx=mouseDeckStart.x-event.clientX,dy=mouseDeckStart.y-event.clientY;
+    mouseDeckStart=null;
+    if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*.8)moveWebinar(dx>0?1:-1);
+  });
+  updateWebinarDeck();
+  document.querySelectorAll('.downloads').forEach(track=>{
+    const shell=track.closest('.carousel-shell');
+    const updateEdges=()=>{
+      shell.classList.toggle('at-start',track.scrollLeft<=2);
+      shell.classList.toggle('at-end',track.scrollLeft+track.clientWidth>=track.scrollWidth-2);
+    };
+    track.addEventListener('scroll',updateEdges,{passive:true});
+    track.addEventListener('wheel',event=>{
+      if(event.ctrlKey||track.scrollWidth<=track.clientWidth+2||Math.abs(event.deltaY)<=Math.abs(event.deltaX))return;
+      event.preventDefault();track.scrollLeft+=event.deltaY;
+    },{passive:false});
+    new ResizeObserver(updateEdges).observe(track);
+    updateEdges();
+  });
+  function show(next){
+    if(busy||next<0||next>=panels.length||next===current)return;
+    const outgoing=panels[current],incoming=panels[next];
+    const focusWasInside=outgoing.contains(document.activeElement);
+    if(focusWasInside)document.activeElement.blur();
+    busy=true;outgoing.classList.add('is-leaving');outgoing.inert=true;outgoing.setAttribute('aria-hidden','true');
+    const lead=reduced.matches?0:260,total=reduced.matches?0:900;
+    setTimeout(()=>{incoming.classList.add('is-active');incoming.inert=false;incoming.setAttribute('aria-hidden','false');current=next;history.replaceState(null,'','#'+incoming.id);if(focusWasInside)incoming.querySelector('h1,h2')?.focus({preventScroll:true});},lead);
+    setTimeout(()=>{outgoing.classList.remove('is-active','is-leaving');busy=false;},total);
+  }
+  window.addEventListener('wheel',event=>{
+    if(event.ctrlKey||Math.abs(event.deltaY)<5)return;
+    if(event.target instanceof Element){
+      const track=event.target.closest('.downloads');
+      if(track&&track.scrollWidth>track.clientWidth+2)return;
+    }
+    event.preventDefault();
+    const next=current+(event.deltaY>0?1:-1);
+    if(busy||next<0||next>=panels.length)return;
+    const now=performance.now();if(now-lastWheelNavigation<1050)return;
+    lastWheelNavigation=now;show(next);
+  },{passive:false});
+  window.addEventListener('keydown',event=>{
+    const down=['ArrowDown','PageDown',' '].includes(event.key),up=['ArrowUp','PageUp'].includes(event.key);
+    if(!down&&!up)return;
+    if(event.target instanceof Element&&event.target.closest('button,a'))return;
+    if(event.target instanceof Element&&event.target.closest('.downloads'))return;
+    event.preventDefault();show(current+(down?1:-1));
+  });
+  window.addEventListener('touchstart',event=>{touchStartX=event.changedTouches[0].clientX;touchStartY=event.changedTouches[0].clientY;touchCard=event.target instanceof Element?event.target.closest('.webinar-cards,.downloads'):null;},{passive:true});
+  window.addEventListener('touchend',event=>{const dx=touchStartX-event.changedTouches[0].clientX,dy=touchStartY-event.changedTouches[0].clientY;if(touchCard&&Math.abs(dx)>Math.abs(dy)*.8){if(touchCard===webinarDeck&&Math.abs(dx)>45)moveWebinar(dx>0?1:-1);return;}if(Math.abs(dy)<65)return;show(current+(dy>0?1:-1));},{passive:true});
+  window.addEventListener('touchcancel',()=>{touchCard=null;},{passive:true});
+  const notice=document.querySelector('.notice');let noticeTimer;
+  document.querySelectorAll('.webinar-card .ds-button').forEach(button=>button.addEventListener('click',()=>{
+    notice.textContent='Registration links are not available in this preview.';
+    notice.classList.add('is-visible');clearTimeout(noticeTimer);
+    noticeTimer=setTimeout(()=>notice.classList.remove('is-visible'),4000);
+  }));
+})();
+(() => {
+  const canHover=matchMedia('(hover: hover) and (pointer: fine) and (min-width: 801px)');
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+  const vertex=`attribute vec2 a_position;varying vec2 v_uv;void main(){v_uv=(a_position+1.0)*0.5;gl_Position=vec4(a_position,0.0,1.0);}`;
+  const fragment=`
+    precision highp float;
+    uniform sampler2D u_image;uniform vec2 u_resolution,u_imageSize,u_pointer,u_mid,u_tail;uniform float u_time,u_reveal,u_radius,u_pixelRatio,u_speed;varying vec2 v_uv;
+    float bayer(vec2 q){vec2 p=mod(floor(q),4.0);
+      if(p.y<1.0){if(p.x<1.0)return 0.0;if(p.x<2.0)return 8.0;if(p.x<3.0)return 2.0;return 10.0;}
+      if(p.y<2.0){if(p.x<1.0)return 12.0;if(p.x<2.0)return 4.0;if(p.x<3.0)return 14.0;return 6.0;}
+      if(p.y<3.0){if(p.x<1.0)return 3.0;if(p.x<2.0)return 11.0;if(p.x<3.0)return 1.0;return 9.0;}
+      if(p.x<1.0)return 15.0;if(p.x<2.0)return 7.0;if(p.x<3.0)return 13.0;return 5.0;}
+    void main(){
+      vec2 ditherCell=floor(gl_FragCoord.xy/2.0);
+      vec2 pixelCoord=ditherCell*2.0+vec2(1.0);
+      vec2 uv=pixelCoord/u_resolution;float canvasRatio=u_resolution.x/u_resolution.y,imageRatio=u_imageSize.x/u_imageSize.y;
+      if(canvasRatio>imageRatio)uv.y=(uv.y-0.5)*imageRatio/canvasRatio+0.5;
+      else uv.x=(uv.x-0.5)*canvasRatio/imageRatio+0.5;
+      vec2 delta=pixelCoord-u_pointer;
+      float distanceFromPointer=length(delta);
+      float angle=atan(delta.y,delta.x);
+      vec2 direction=u_pointer-u_mid;
+      direction=length(direction)>1.0?normalize(direction):vec2(1.0,0.0);
+      float behind=max(0.0,dot(delta/(distanceFromPointer+0.001),-direction));
+      float fluidEdge=1.0+0.035*sin(angle*3.0+u_time*1.3)+0.018*sin(angle*7.0-u_time*1.8)+0.22*u_speed*behind;
+      float boundary=u_radius*fluidEdge;
+      float fluidStrength=u_reveal*(1.0-smoothstep(u_radius*0.15,u_radius,distanceFromPointer));
+      vec2 displacement=vec2(sin(uv.y*26.0+u_time*1.4),cos(uv.x*23.0-u_time*1.2))*1.25*u_pixelRatio*fluidStrength/u_resolution;
+      vec3 original=texture2D(u_image,clamp(uv+displacement,0.0,1.0)).rgb;
+      float luminance=dot(original,vec3(0.2126,0.7152,0.0722));
+      luminance=clamp((luminance-0.12)*1.24,0.0,1.0);
+      float threshold=(bayer(ditherCell)+0.5)/16.0;
+      threshold+=0.035*sin(u_time*2.1+uv.x*14.0+uv.y*7.0);
+      threshold+=0.0125*sin(u_time*4.3+uv.x*33.0-uv.y*17.0);
+      float dotColor=step(threshold,luminance);
+      vec3 exposedColor=min(original*1.12+vec3(0.02),vec3(1.0));
+      vec3 coloredDither=mix(mix(original*0.58,min(original*1.10,vec3(1.0)),dotColor),exposedColor,0.18);
+      vec3 highlightedDither=mix(mix(original*0.90,min(original*1.40,vec3(1.0)),dotColor),min(exposedColor*1.13,vec3(1.0)),0.18);
+      float edgeDither=(bayer(ditherCell+vec2(2.0,1.0))+0.5)/16.0-0.5;
+      float radialProgress=clamp((distanceFromPointer+edgeDither*6.0*u_pixelRatio)/boundary,0.0,1.0);
+      float circleBlend=1.0-smoothstep(0.0,1.0,radialProgress);
+      vec2 firstSegment=u_mid-u_tail;
+      vec2 secondSegment=u_pointer-u_mid;
+      float firstPosition=clamp(dot(pixelCoord-u_tail,firstSegment)/max(dot(firstSegment,firstSegment),1.0),0.0,1.0);
+      float secondPosition=clamp(dot(pixelCoord-u_mid,secondSegment)/max(dot(secondSegment,secondSegment),1.0),0.0,1.0);
+      float firstRadius=u_radius*mix(0.16,0.38,firstPosition)*(0.8+0.35*u_speed);
+      float secondRadius=u_radius*mix(0.38,0.66,secondPosition)*(0.8+0.35*u_speed);
+      float firstDistance=length(pixelCoord-mix(u_tail,u_mid,firstPosition))+edgeDither*5.0*u_pixelRatio;
+      float secondDistance=length(pixelCoord-mix(u_mid,u_pointer,secondPosition))+edgeDither*5.0*u_pixelRatio;
+      float firstBlend=(1.0-smoothstep(0.0,firstRadius,firstDistance))*mix(0.06,0.25,firstPosition);
+      float secondBlend=(1.0-smoothstep(0.0,secondRadius,secondDistance))*mix(0.25,0.55,secondPosition);
+      float trailBlend=max(firstBlend,secondBlend)*(0.35+0.65*u_speed);
+      float reveal=u_reveal*max(circleBlend,trailBlend);
+      vec3 result=mix(coloredDither,highlightedDither,reveal);
+      gl_FragColor=vec4(result,1.0);
+    }`;
+  function compile(gl,type,source){const shader=gl.createShader(type);gl.shaderSource(shader,source);gl.compileShader(shader);if(!gl.getShaderParameter(shader,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(shader));return shader;}
+  const scenes=[];
+  for(const section of document.querySelectorAll('.scene')){
+    const background=section.querySelector('.background'),canvas=section.querySelector('canvas');
+    const gl=canvas.getContext('webgl',{alpha:false,antialias:false,premultipliedAlpha:false});
+    if(!gl)continue;
+    let program;
+    try{program=gl.createProgram();gl.attachShader(program,compile(gl,gl.VERTEX_SHADER,vertex));gl.attachShader(program,compile(gl,gl.FRAGMENT_SHADER,fragment));gl.linkProgram(program);if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw Error(gl.getProgramInfoLog(program));}
+    catch(error){console.error('Dither effect unavailable:',error);continue;}
+    gl.useProgram(program);
+    const quad=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,quad);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),gl.STATIC_DRAW);
+    const position=gl.getAttribLocation(program,'a_position');gl.enableVertexAttribArray(position);gl.vertexAttribPointer(position,2,gl.FLOAT,false,0,0);
+    const names=['u_image','u_resolution','u_imageSize','u_pointer','u_mid','u_tail','u_time','u_reveal','u_radius','u_pixelRatio','u_speed'];
+    const u=Object.fromEntries(names.map(name=>[name,gl.getUniformLocation(program,name)]));gl.uniform1i(u.u_image,0);
+    const state={section,background,canvas,gl,program,u,dpr:1,ready:false,visible:false,pointerX:-10000,pointerY:-10000,midX:-10000,midY:-10000,tailX:-10000,tailY:-10000,targetX:-10000,targetY:-10000,hasPointer:false,reveal:0,targetReveal:0,lastMove:0,targetSpeed:0,speed:0,lastFrame:0};
+    function resize(){const box=canvas.getBoundingClientRect();state.dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.max(1,Math.round(box.width*state.dpr));canvas.height=Math.max(1,Math.round(box.height*state.dpr));gl.viewport(0,0,canvas.width,canvas.height);gl.useProgram(program);gl.uniform2f(u.u_resolution,canvas.width,canvas.height);gl.uniform1f(u.u_pixelRatio,state.dpr);}
+    new ResizeObserver(resize).observe(canvas);resize();
+    const picture=new Image();picture.onload=()=>{try{gl.useProgram(program);const texture=gl.createTexture();gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,texture);gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,picture);if(gl.getError()!==gl.NO_ERROR)throw Error('WebGL texture upload failed');gl.uniform2f(u.u_imageSize,picture.naturalWidth,picture.naturalHeight);state.ready=true;background.classList.add('ready');}catch(error){console.warn('Using the image fallback:',error);}};picture.onerror=()=>console.warn('Illustration could not load:',section.id);picture.src=window.RUNABLE_TEXTURES?.[section.id]||section.querySelector('.fallback').src;
+    section.addEventListener('pointermove',event=>{if(!canHover.matches||event.pointerType==='touch')return;const box=canvas.getBoundingClientRect(),now=performance.now(),nextX=(event.clientX-box.left)*state.dpr,nextY=(box.bottom-event.clientY)*state.dpr,elapsed=now-state.lastMove;if(state.hasPointer&&elapsed>0&&elapsed<250)state.targetSpeed=Math.min(1,Math.hypot(nextX-state.targetX,nextY-state.targetY)/state.dpr/(elapsed/1000)/1400);state.targetX=nextX;state.targetY=nextY;state.lastMove=now;if(!state.hasPointer){state.pointerX=state.midX=state.tailX=nextX;state.pointerY=state.midY=state.tailY=nextY;state.targetSpeed=0;state.hasPointer=true;}state.targetReveal=1;});
+    section.addEventListener('pointerleave',()=>{state.targetReveal=0;state.targetSpeed=0;state.hasPointer=false;state.lastMove=0;});
+    canHover.addEventListener('change',()=>{if(!canHover.matches){state.reveal=0;state.targetReveal=0;state.targetSpeed=0;state.hasPointer=false;state.lastMove=0;}});
+    scenes.push(state);
+  }
+  function render(now){requestAnimationFrame(render);for(const s of scenes){if(!s.ready||!s.section.classList.contains('is-active')||now-s.lastFrame<(reduced.matches?200:33))continue;const dt=s.lastFrame?Math.min(100,now-s.lastFrame):33;s.lastFrame=now;s.speed+=(s.targetSpeed-s.speed)*(reduced.matches?1:1-Math.exp(-dt/120));s.targetSpeed*=Math.exp(-dt/220);const follow=reduced.matches?1:1-Math.exp(-dt/330);s.pointerX+=(s.targetX-s.pointerX)*follow;s.pointerY+=(s.targetY-s.pointerY)*follow;const midFollow=reduced.matches?1:1-Math.exp(-dt/(520+160*s.speed));s.midX+=(s.pointerX-s.midX)*midFollow;s.midY+=(s.pointerY-s.midY)*midFollow;const tailFollow=reduced.matches?1:1-Math.exp(-dt/(850+600*s.speed));s.tailX+=(s.midX-s.tailX)*tailFollow;s.tailY+=(s.midY-s.tailY)*tailFollow;s.reveal+=(s.targetReveal-s.reveal)*(reduced.matches?1:.16);const {gl,u}=s;gl.useProgram(s.program);gl.uniform2f(u.u_pointer,s.pointerX,s.pointerY);gl.uniform2f(u.u_mid,s.midX,s.midY);gl.uniform2f(u.u_tail,s.tailX,s.tailY);gl.uniform1f(u.u_speed,s.speed);gl.uniform1f(u.u_time,reduced.matches?0:now*.0005);gl.uniform1f(u.u_reveal,s.reveal);gl.uniform1f(u.u_radius,267.1875*s.dpr);gl.drawArrays(gl.TRIANGLES,0,6);}}
+  requestAnimationFrame(render);
+})();
+</script>
+</body>
+</html>
