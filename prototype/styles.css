@@ -1,0 +1,143 @@
+@font-face{font-family:"Hedvig Letters Serif";src:url("assets/fonts/hedvig-letters-serif.woff2") format("woff2");font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:"ID Grotesk";src:url("assets/fonts/id-grotesk-medium.ttf") format("truetype");font-style:normal;font-weight:500;font-display:swap}
+@font-face{font-family:"ID Grotesk";src:url("assets/fonts/id-grotesk-semibold.ttf") format("truetype");font-style:normal;font-weight:600;font-display:swap}
+:root{font-synthesis:none;color-scheme:light;--paper:#fefdfb;--ink:#1b140e;--border:#dbdbdb}
+*{box-sizing:border-box}
+html,body{min-height:100%;margin:0}
+html{scroll-behavior:smooth}
+body{background:#f4f2ef;color:var(--ink);font-family:"ID Grotesk",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.preview-shell{display:grid;place-items:center;padding:24px}
+.academy-card{position:relative;isolation:isolate;width:min(1512px,100%);height:740px;overflow:hidden;border:1px solid var(--border);border-radius:16px;background:var(--paper)}
+.bg-art{position:absolute;z-index:0;top:192px;left:-1px;width:calc(100% + 2px);height:603px;overflow:hidden;pointer-events:none}
+.bg-fallback,.bg-dither{position:absolute;inset:0;display:block;width:100%;height:100%}
+.bg-fallback{object-fit:cover;filter:grayscale(1) contrast(1.55)}
+.bg-dither{display:none}
+.bg-art.ready .bg-dither{display:block}
+.bg-art.ready .bg-fallback{display:none}
+#academy .bg-art::after{position:absolute;z-index:2;inset:0;content:"";background:linear-gradient(to bottom,var(--paper) 0%,rgba(254,253,251,.94) 13%,rgba(254,253,251,.64) 28%,rgba(254,253,251,.22) 43%,transparent 58%)}
+#academy .top-wash{display:none}
+.top-wash{position:absolute;z-index:1;top:-126px;left:calc(50% + 42px);display:block;width:2398px;height:573px;max-width:none;transform:translateX(-50%);pointer-events:none}
+.content{position:absolute;z-index:2;top:74px;left:50%;display:flex;flex-direction:column;align-items:center;gap:48px;width:min(584px,calc(100% - 32px));transform:translateX(-50%)}
+.intro{display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;text-align:center}
+.intro h1{width:min(422px,100%);margin:0;font:400 clamp(30px,2.4vw,36px)/1.11 "Hedvig Letters Serif",Georgia,serif;letter-spacing:-.72px;text-wrap:balance}
+.intro p{width:min(584px,100%);margin:0;font:500 clamp(14px,1.1vw,16px)/1.5 "ID Grotesk",Arial,sans-serif;letter-spacing:0}
+.lesson-card{display:flex;flex-direction:column;gap:8px;width:min(545px,100%);padding:23px;border:1px solid var(--border);border-radius:16px;background:#fff;box-shadow:inset 0 -5px 4px rgba(255,255,255,.25)}
+.lesson-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px;width:100%;min-height:27px}
+.lesson-heading span:first-child{font:600 18px/26px "ID Grotesk",Arial,sans-serif;letter-spacing:-.02em}
+.lesson-heading span:last-child{color:#6d6864;font:500 12px/18px "ID Grotesk",Arial,sans-serif;white-space:nowrap}
+.lesson-thumbnail{position:relative;display:block;width:100%;height:auto;aspect-ratio:497/281.25;overflow:hidden;border:0;border-radius:16px;background:#fff;outline-offset:3px}
+.lesson-thumbnail img{display:block;width:100%;height:100%;object-fit:cover;filter:grayscale(1);transition:filter .4s ease,transform .55s cubic-bezier(.2,.75,.2,1)}
+.lesson-card:hover .lesson-thumbnail img,.lesson-card:focus-within .lesson-thumbnail img{filter:grayscale(0);transform:scale(1.025)}
+.play-button{position:absolute;top:50%;left:50%;display:grid;place-items:center;width:58px;height:58px;border:1px solid rgba(255,255,255,.72);border-radius:50%;background:rgba(24,15,8,.82);box-shadow:0 8px 24px rgba(0,0,0,.22);opacity:0;transform:translate(-50%,-43%) scale(.82);transition:opacity .28s ease,transform .36s cubic-bezier(.2,.75,.2,1);pointer-events:none}
+.play-triangle{width:0;height:0;margin-left:4px;border-top:10px solid transparent;border-bottom:10px solid transparent;border-left:16px solid #fff}
+.lesson-card:hover .play-button,.lesson-card:focus-within .play-button{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.lesson-thumbnail:focus-visible,.academy-cta:focus-visible{outline:3px solid #06a8c1}
+.lesson-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;width:100%;min-height:44px;margin-top:10px}
+.lesson-details{display:flex;flex:1 1 180px;min-width:0;flex-direction:column;align-items:flex-start;gap:2px}
+.lesson-details h2{max-width:100%;margin:0;font:600 20px/27px "ID Grotesk",Arial,sans-serif;letter-spacing:-.025em;text-wrap:balance}
+.lesson-meta{display:flex;align-items:center;flex-wrap:wrap;column-gap:12px;row-gap:3px;color:#6d6864;font:500 12px/17px "ID Grotesk",Arial,sans-serif}
+.lesson-meta img{display:block;width:5px;height:5px}
+.academy-cta{display:inline-flex;flex:none;align-items:center;justify-content:center;gap:4px;width:166px;height:36px;padding:6px 12px;border-radius:12px;background:#180f08;color:#fefdfb;font:500 14px/20px "ID Grotesk",Arial,sans-serif;text-decoration:none;white-space:nowrap;transition:background .2s ease,transform .2s ease,box-shadow .2s ease}
+.academy-cta img{display:block;width:16px;height:16px;filter:invert(1)}
+.academy-cta:hover{background:#33261d;box-shadow:0 5px 14px rgba(24,15,8,.2);transform:translateY(-1px)}
+.academy-cta:active{background:#180f08;box-shadow:none;transform:none}
+.webinar-stage .bg-art{top:99px;height:763px}
+.webinar-stage .bg-fallback,.webinar-stage .bg-dither{transform:none}
+.webinar-layout{position:absolute;z-index:2;top:74px;left:5.3%;display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,42%);column-gap:10%;width:89.4%}
+.webinar-intro{width:100%;min-width:0}
+.webinar-intro h2{width:min(422px,100%);margin:0;font:400 clamp(30px,2.4vw,36px)/1.11 "Hedvig Letters Serif",Georgia,serif;letter-spacing:-.72px;text-wrap:balance}
+.webinar-intro p{width:min(584px,100%);margin:16px 0 0;font:500 clamp(14px,1.1vw,16px)/1.5 "ID Grotesk",Arial,sans-serif}
+.webinar-list{display:flex;min-width:0;flex-direction:column;gap:24px;width:100%;height:660px;overflow-x:hidden;overflow-y:auto;scroll-snap-type:y proximity;scrollbar-width:thin;scrollbar-color:#bcb5ae transparent}
+.webinar-list:focus-visible{outline:3px solid #06a8c1;outline-offset:3px}
+.workshop-card{display:flex;min-width:0;flex:none;flex-direction:column;gap:12px;width:100%;min-height:236px;padding:23px;border:1px solid var(--border);border-radius:16px;background:#fff;box-shadow:inset 0 -5px 4px rgba(255,255,255,.25);scroll-snap-align:start}
+.workshop-card h3{width:min(536px,100%);margin:0;color:var(--ink);font:400 clamp(18px,1.35vw,20px)/1.4 "Hedvig Letters Serif",Georgia,serif;letter-spacing:-.2px}
+.workshop-benefit{max-width:100%;margin:0;color:#494743;font:500 15px/22px "ID Grotesk",Arial,sans-serif}
+.workshop-info{display:flex;flex-direction:column;align-items:flex-start;gap:12px;margin-top:auto}
+.workshop-info p{margin:0;color:#6d6864;font:500 13px/1.5 "ID Grotesk",Arial,sans-serif}
+.claim-spot{display:inline-flex;align-items:center;justify-content:center;width:104px;height:36px;padding:6px 12px;border:0;border-radius:12px;background:#180f08;color:#fefdfb;font:500 14px/20px "ID Grotesk",Arial,sans-serif;cursor:pointer;transition:background .2s ease,transform .2s ease,box-shadow .2s ease}
+.claim-spot:hover{background:#33261d;box-shadow:0 5px 14px rgba(24,15,8,.2);transform:translateY(-1px)}
+.claim-spot:active{background:#180f08;box-shadow:none;transform:none}
+.claim-spot:focus-visible{outline:3px solid #06a8c1;outline-offset:3px}
+.desktop-stage .bg-art{top:280px;height:850px;-webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 18%);mask-image:linear-gradient(to bottom,transparent 0%,#000 18%)}
+.desktop-content{position:absolute;z-index:2;top:74px;left:50%;display:flex;flex-direction:column;align-items:center;gap:48px;width:min(860px,calc(100% - 48px));transform:translateX(-50%)}
+.desktop-content h2{max-width:100%;margin:0;font:400 clamp(30px,2.4vw,36px)/1.11 "Hedvig Letters Serif",Georgia,serif;letter-spacing:-.72px;text-align:center;text-wrap:balance}
+.desktop-downloads{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;width:100%}
+.download-card{display:flex;flex-direction:column;justify-content:space-between;gap:24px;min-width:0;min-height:220px;padding:23px;border:1px solid var(--border);border-radius:16px;background:#fff}
+.download-heading{display:flex;align-items:center;gap:12px;min-width:0}
+.download-heading img{display:block;width:28px;height:28px;flex:none;object-fit:contain}
+.download-heading h3{margin:0;font:400 clamp(22px,2vw,28px)/1.2 "Hedvig Letters Serif",Georgia,serif}
+.download-bottom{display:flex;flex-direction:column;gap:16px;width:100%}
+.download-bottom p{min-height:22px;margin:0;color:#494743;font:500 clamp(13px,1.05vw,15px)/1.45 "ID Grotesk",Arial,sans-serif}
+.download-button,.coming-soon{display:inline-flex;align-items:center;justify-content:center;gap:5px;width:100%;min-height:36px;padding:6px 12px;border-radius:12px;font:500 14px/20px "ID Grotesk",Arial,sans-serif;text-decoration:none}
+.download-button{background:#180f08;color:#fefdfb;transition:background .2s ease,transform .2s ease}
+.download-button img{width:16px;height:16px;filter:invert(1)}
+.download-button:hover{background:#33261d;transform:translateY(-1px)}
+.download-button:focus-visible{outline:3px solid #06a8c1;outline-offset:3px}
+.coming-soon{border:1px solid #dbdbdb;background:#f6f4f1;color:#6d6864}
+.prototype-notice{position:fixed;z-index:10;bottom:24px;left:50%;max-width:calc(100% - 32px);padding:10px 15px;border-radius:10px;background:#180f08;color:#fefdfb;font:500 13px/18px "ID Grotesk",Arial,sans-serif;text-align:center;opacity:0;pointer-events:none;transform:translate(-50%,12px);transition:opacity .2s ease,transform .2s ease}
+.prototype-notice.is-visible{opacity:1;transform:translate(-50%,0)}
+.reveal-pending{opacity:0;filter:blur(12px);transform:translateY(16px)}
+.reveal-pending.reveal-enter{animation:section-reveal 1.44s cubic-bezier(.2,.75,.2,1) var(--reveal-delay,0ms) both}
+@keyframes section-reveal{from{opacity:0;filter:blur(12px);transform:translateY(16px)}to{opacity:1;filter:blur(0);transform:translateY(0)}}
+@media(max-width:1000px) and (min-width:901px){
+  .webinar-intro p{width:100%}
+  .webinar-intro h2{width:100%;font-size:32px;line-height:36px}
+  .webinar-intro p{font-size:14px;line-height:21px}
+  .workshop-card{height:auto;min-height:236px}
+  .workshop-card h3{width:100%;height:auto;font-size:19px;line-height:26px}
+  .workshop-info p{font-size:14px}
+}
+@media(max-width:900px){
+  .preview-shell{padding:12px}
+  .academy-card{width:100%;height:700px;min-height:0;border-radius:16px}
+  .bg-art{top:auto;bottom:0;left:0;width:100%;height:55%;min-height:360px;-webkit-mask-image:linear-gradient(to bottom,transparent,#000 42%);mask-image:linear-gradient(to bottom,transparent,#000 42%)}
+  .bg-fallback{object-position:42% center}
+  .top-wash{display:none}
+  .content{position:relative;top:auto;left:auto;gap:30px;width:100%;padding:40px 18px 60px;transform:none}
+  .intro{gap:14px}
+  .intro h1{width:min(422px,100%);font-size:clamp(29px,8vw,36px);line-height:1.08;letter-spacing:-.02em}
+  .intro p{width:min(500px,100%);font-size:14px;line-height:21px}
+  .lesson-card{width:min(545px,100%);padding:18px;border-radius:16px}
+  .lesson-heading{padding-left:0}
+  .lesson-thumbnail{height:auto;aspect-ratio:16/9;border-radius:12px}
+  .lesson-footer{height:auto;margin-top:8px;align-items:flex-start;flex-wrap:wrap}
+  .lesson-details{padding-left:0}
+  .webinar-stage .bg-art{top:auto;bottom:0;height:58%;min-height:400px}
+  .webinar-layout{position:relative;top:auto;left:auto;display:flex;flex-direction:column;gap:28px;width:100%;padding:40px 18px 40px}
+  .webinar-intro,.webinar-intro p,.webinar-list,.workshop-card{width:100%}
+  .webinar-intro h2{width:min(422px,100%);font-size:clamp(29px,8vw,36px);line-height:1.08;letter-spacing:-.02em}
+  .webinar-intro p{font-size:14px;line-height:21px}
+  .webinar-list{gap:16px;height:420px}
+  .workshop-card{min-height:220px;padding:18px;gap:12px}
+  .workshop-card h3{width:100%;height:auto}
+  .workshop-benefit{font-size:14px;line-height:20px}
+  .workshop-info p{font-size:14px;line-height:21px;white-space:normal}
+  .desktop-stage .bg-art{top:auto;bottom:0;height:55%;min-height:360px}
+  .desktop-content{position:relative;top:auto;left:auto;gap:28px;width:100%;padding:40px 18px 180px;transform:none}
+  .desktop-downloads{gap:16px}
+  .download-card{min-height:205px;padding:18px}
+}
+@media(max-width:440px){
+  .content{padding:32px 14px 56px}
+  .lesson-card{padding:16px}
+  .lesson-heading span:first-child{font-size:14px}
+  .lesson-details h2{font-size:18px;line-height:25px}
+  .lesson-footer{gap:14px}
+  .academy-cta{width:100%}
+  .webinar-layout{padding:32px 14px 32px}
+  .workshop-card{padding:16px}
+  .workshop-card h3{font-size:18px;line-height:25px}
+  .desktop-content{padding:32px 14px 150px}
+  .desktop-downloads{grid-template-columns:1fr}
+  .download-card{min-height:170px;padding:16px}
+}
+@media(max-width:380px){
+  .lesson-heading{flex-wrap:wrap;column-gap:8px}
+  .lesson-heading span:last-child{font-size:11px}
+  .webinar-layout{gap:18px;padding:24px 12px}
+  .webinar-intro h2{font-size:26px;line-height:1.1}
+  .webinar-intro p{margin-top:10px;font-size:13px;line-height:18px}
+  .webinar-list{height:360px}
+}
+@media(max-width:600px){.academy-cta{width:100%}}
+@media(prefers-reduced-motion:reduce){.lesson-thumbnail img,.play-button,.academy-cta,.claim-spot,.download-button,.prototype-notice{transition:none}.reveal-pending{opacity:1;filter:none;transform:none}.reveal-pending.reveal-enter{animation:none}}

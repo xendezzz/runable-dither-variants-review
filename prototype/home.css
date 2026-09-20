@@ -1,0 +1,62 @@
+:root{--rail:226px}
+body:not(.nav-open){--rail:64px}
+.app-main{min-width:0;margin-left:var(--rail);transition:margin-left .3s ease}
+.sidebar{position:fixed;z-index:30;inset:0 auto 0 0;display:flex;flex-direction:column;width:var(--rail);padding:15px 10px;background:#fcfaf9;border-right:1px solid #eee9e6;overflow:hidden;transition:width .3s ease;white-space:nowrap}
+.sidebar-top{display:flex;align-items:center;gap:8px;height:34px;margin:0 5px 19px}
+.brandmark{display:grid;place-items:center;width:26px;height:26px;flex:none;color:#1b1714}
+.brandmark svg{width:23px;height:23px;fill:currentColor}
+.sidebar-search,.sidebar-toggle{display:grid;place-items:center;width:27px;height:27px;flex:none;padding:4px;border:0;border-radius:8px;background:transparent;color:#2b2724;cursor:pointer}
+.sidebar-search{margin-left:auto}
+.sidebar-search svg,.sidebar-toggle svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.sidebar-toggle:hover,.sidebar-search:hover{background:#f1eae6}
+.sidebar-nav{min-height:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+.sidebar-link{display:flex;align-items:center;gap:12px;height:40px;padding:0 10px;border-radius:11px;color:#39332f;font:500 14px/20px "ID Grotesk",Arial,sans-serif;text-decoration:none}
+.sidebar-link:hover,.sidebar-link.is-current{background:#f2eae6}
+.nav-symbol{display:grid;place-items:center;width:18px;flex:none;font:500 21px/1 Arial,sans-serif}
+.nav-label{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.free-tag{margin-left:auto;padding:3px 7px;border-radius:12px;background:#e3edf2;color:#3d829f;font-size:10px}
+.sidebar-heading{display:flex;justify-content:space-between;padding:23px 10px 7px;color:#77716d;font-size:12px}
+.sidebar-detail{padding:7px 10px;overflow:hidden;text-overflow:ellipsis;color:#77716d;font-size:12px}
+.sidebar-bottom{margin-top:auto;padding-top:9px}
+.get-started{display:flex;flex-direction:column;gap:16px;padding:15px;border:1px solid #ede8e5;border-radius:16px;background:#fff;font-size:13px}
+.get-started span{color:#77716d;font-size:12px}
+.profile{display:flex;align-items:center;gap:8px;height:34px;margin-top:11px;padding:3px 5px;border:1px solid #ebe6e2;border-radius:18px;color:#39332f;font-size:12px}
+.avatar{display:grid;place-items:center;width:26px;height:26px;flex:none;border-radius:50%;background:#e83e7c;color:#fff}
+body:not(.nav-open) .sidebar{padding-inline:9px}
+body:not(.nav-open) .sidebar-top{flex-wrap:wrap;justify-content:center;height:73px;margin:0 0 13px}
+body:not(.nav-open) .sidebar-search{display:none}
+body:not(.nav-open) .sidebar-link{justify-content:center;padding:0}
+body:not(.nav-open) .nav-label,body:not(.nav-open) .free-tag,body:not(.nav-open) .sidebar-heading,body:not(.nav-open) .sidebar-detail,body:not(.nav-open) .get-started,body:not(.nav-open) .profile-name{display:none}
+body:not(.nav-open) .profile{justify-content:center;padding:2px}
+.runable-home{min-height:100svh;padding:15px 20px 70px;background:#fff;scroll-snap-align:start}
+.home-topbar{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;width:100%}
+.get-app,.credit-pill{display:inline-flex;align-items:center;height:32px;padding:0 13px;border:1px solid #ede8e5;border-radius:18px;background:#fff;color:#574e48;font-size:13px;text-decoration:none}
+.credit-pill{background:#fffaf3;color:#d48b35}
+.build-grow{display:flex;gap:3px;padding:3px;border-radius:20px;background:#f1ece9;color:#77716d;font-size:13px}
+.build-grow span{padding:4px 10px}
+.build-grow .selected{border-radius:16px;background:#fff;color:#2c2724}
+.home-content{width:min(800px,100%);margin:clamp(110px,20vh,250px) auto 0}
+.home-content h1{margin:0 0 29px;color:#514c49;font:500 clamp(29px,3.2vw,39px)/1.2 "ID Grotesk",Arial,sans-serif;letter-spacing:-.04em;text-align:center}
+.task-composer{min-height:112px;padding:16px 16px 10px;border:1px solid #eee8e4;border-radius:17px;background:#fff}
+.task-composer p{margin:0;color:#bab3ae;font-size:16px}
+.composer-actions{display:flex;align-items:center;gap:23px;margin-top:48px;color:#625b57;font-size:13px}
+.composer-actions>span:first-child{font-size:20px}
+.composer-spacer{flex:1}
+.mic-button{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#f4efec}
+.composer-tools{display:flex;gap:22px;min-height:34px;margin:0 8px 19px;padding:8px 16px;border-radius:0 0 16px 16px;background:#f9f5f3;color:#4d4743;font-size:13px}
+.task-category{margin-top:15px;padding:15px;border:1px solid #eee8e4;border-radius:17px;background:#fefbfa}
+.task-category-title{display:flex;justify-content:space-between;margin-bottom:14px;color:#423b37;font-size:14px}
+.task-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.task-tiles-two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.task-tile{display:flex;flex-direction:column;justify-content:space-between;min-height:68px;padding:10px;border:1px solid #f0eae6;border-radius:13px;background:#fff;color:#4d4743;font-size:13px}
+.task-tile i{color:#7758eb;font-size:16px;font-style:normal}
+.home-scroll{display:block;width:max-content;max-width:100%;margin:28px auto 0;color:#77716d;font-size:13px;text-decoration:none}
+.home-scroll:hover{text-decoration:underline}
+.preview-page{background:#fff}
+.theme-switch{position:fixed;z-index:40;right:18px;bottom:18px;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:126px;height:38px;padding:7px 12px;border:1px solid #e7e1dd;border-radius:12px;background:#fff;box-shadow:0 7px 24px rgba(27,20,14,.12);color:#292420;font:500 13px/20px "ID Grotesk",Arial,sans-serif;text-decoration:none;transition:background .2s ease,transform .2s ease}
+.theme-switch:hover{background:#f4efec;transform:translateY(-2px)}
+.theme-switch:focus-visible{outline:3px solid #06a8c1;outline-offset:3px}
+.theme-switch svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:1100px){.home-content{margin-top:clamp(90px,15vh,180px)}}
+@media(max-width:700px){.app-main{margin-left:58px!important}.sidebar{width:58px!important;padding-inline:7px}.nav-open .sidebar{width:222px!important;box-shadow:0 0 0 100vmax rgba(0,0,0,.28)}.nav-open .sidebar-top{flex-wrap:nowrap;height:34px;margin:0 5px 19px}.nav-open .sidebar-search{display:grid}.nav-open .sidebar-link{justify-content:flex-start;padding:0 10px}.nav-open .nav-label,.nav-open .free-tag,.nav-open .sidebar-heading,.nav-open .sidebar-detail,.nav-open .get-started,.nav-open .profile-name{display:initial}.nav-open .get-started{display:flex}.nav-open .profile{justify-content:flex-start}.runable-home{padding:12px 12px 48px}.home-content{margin-top:clamp(80px,15vh,145px)}.home-content h1{font-size:27px}.task-composer p{font-size:14px}.task-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}.build-grow{font-size:11px}.credit-pill{display:none}.theme-switch{right:12px;bottom:12px}}
+@media(prefers-reduced-motion:reduce){.sidebar,.app-main{transition:none}}
