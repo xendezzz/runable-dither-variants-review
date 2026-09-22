@@ -6,6 +6,7 @@ body,.preview-page,.runable-home{background:#212121;color:#ededed}
 .webinar-stage .bg-art::after{position:absolute;z-index:2;inset:0;content:"";background:linear-gradient(to bottom,#212121 0%,rgba(33,33,33,.65) 13%,transparent 38%)}
 .top-wash{display:none}
 .lesson-card,.workshop-card,.download-card{border-color:#ffffff17;background:#171717;box-shadow:0 12px 30px rgba(0,0,0,.15)}
+.lesson-card{background:rgba(23,23,23,.95)}
 .lesson-thumbnail{background:#171717}
 .lesson-heading span:last-child,.lesson-meta,.workshop-info p{color:#a8a8a8}
 .workshop-benefit,.download-bottom p{color:#c3c3c3}
