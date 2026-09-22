@@ -27,9 +27,12 @@ body{display:grid;place-items:center;min-height:100svh;padding:72px 24px 36px;ba
 .course-progress{color:rgba(27,20,14,.58);font:500 12px/16px "ID Grotesk",Arial,sans-serif}
 .course-body{display:flex;flex-direction:column;gap:16px;min-width:0}
 .lesson-thumbnail{position:relative;display:block;overflow:hidden;border:0 solid #303030;background:#fff;outline-offset:3px}
-.lesson-thumbnail::after{position:absolute;z-index:1;inset:0;background:repeating-conic-gradient(rgba(24,15,8,.22) 0 25%,transparent 0 50%) 0 0/2px 2px;content:"";opacity:.16;mix-blend-mode:multiply;pointer-events:none;transition:opacity .35s ease}
 .lesson-thumbnail>img{display:block;width:100%;height:100%;object-fit:cover;filter:grayscale(1);transition:filter .4s ease,transform .55s cubic-bezier(.2,.75,.2,1)}
-.lesson-panel:hover .lesson-thumbnail::after,.lesson-panel:focus-within .lesson-thumbnail::after{opacity:.11}
+.thumbnail-static-dither{position:absolute;z-index:1;inset:0;display:block;width:100%;height:100%;image-rendering:pixelated;pointer-events:none;transition:opacity .35s ease}
+.thumbnail-static-dither--mono{opacity:1}
+.thumbnail-static-dither--color{opacity:0}
+.lesson-panel:hover .thumbnail-static-dither--mono,.lesson-panel:focus-within .thumbnail-static-dither--mono{opacity:0}
+.lesson-panel:hover .thumbnail-static-dither--color,.lesson-panel:focus-within .thumbnail-static-dither--color{opacity:1}
 .lesson-panel:hover .lesson-thumbnail>img,.lesson-panel:focus-within .lesson-thumbnail>img{filter:grayscale(0);transform:scale(1.018)}
 .play-button{position:absolute;z-index:3;top:50%;left:50%;display:grid;place-items:center;width:58px;height:58px;border:1px solid rgba(255,255,255,.72);border-radius:50%;background:rgba(24,15,8,.82);box-shadow:0 8px 24px rgba(0,0,0,.22);opacity:0;transform:translate(-50%,-43%) scale(.82);transition:opacity .28s ease,transform .36s cubic-bezier(.2,.75,.2,1);pointer-events:none}
 .play-button::after{width:0;height:0;margin-left:4px;border-top:9px solid transparent;border-bottom:9px solid transparent;border-left:15px solid #fff;content:""}
@@ -82,4 +85,4 @@ body{display:grid;place-items:center;min-height:100svh;padding:72px 24px 36px;ba
 .layout-split .course-unit--large .academy-cta span{padding:0 4.949px}
 .layout-split .course-unit--large .academy-cta img{width:19.796px;height:19.796px}
 @media(max-width:620px){body{padding:64px 12px 24px}.frame-holder{width:calc(100vw - 24px)}.variant-nav{top:10px}.variant-nav a{padding-inline:10px;font-size:12px}}
-@media(prefers-reduced-motion:reduce){.lesson-thumbnail::after,.lesson-thumbnail>img,.play-button{transition:none}}
+@media(prefers-reduced-motion:reduce){.thumbnail-static-dither,.lesson-thumbnail>img,.play-button{transition:none}}
