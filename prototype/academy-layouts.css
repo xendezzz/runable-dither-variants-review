@@ -50,11 +50,11 @@ body{display:grid;place-items:center;min-height:100svh;padding:72px 24px 36px;ba
 .layout-centered .intro{display:flex;width:584px;flex-direction:column;align-items:center;gap:16px;text-align:center}
 .layout-centered .intro h1{width:422px;text-wrap:balance}
 .layout-centered .intro p{width:584px}
-.layout-centered .lesson-panel{width:547px;padding:16px 24px 24px;border-radius:16px}
-.layout-centered .course-header{width:497px;padding-left:8px}
-.layout-centered .course-body{width:497px}
-.layout-centered .lesson-thumbnail{width:497px;height:281.25px;border-width:0;border-radius:16px}
-.layout-centered .course-footer{width:497px}
+.layout-centered .lesson-panel{width:500px;padding:14px 20px 20px;border-width:.5px;border-radius:16px}
+.layout-centered .course-header{width:459px;padding-left:8px}
+.layout-centered .course-body{width:459px}
+.layout-centered .lesson-thumbnail{width:459px;height:259.7px;border-width:0;border-radius:16px}
+.layout-centered .course-footer{width:459px}
 .layout-centered .lesson-details{width:180px;padding-left:8px}
 
 /* Figma node 20543:21755 */
