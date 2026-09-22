@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Runable Academy — centered layout</title>
+  <link rel="stylesheet" href="../academy-layouts.css">
+</head>
+<body>
+  <nav class="variant-nav" aria-label="Academy card layouts"><a href="../layout-centered/index.html" aria-current="page">Centered</a><a href="../layout-split/index.html">Split layout</a></nav>
+  <main class="frame-holder">
+    <section class="academy-frame academy-card layout-centered" data-texture="academy" aria-labelledby="academy-title">
+      <div class="bg-art" aria-hidden="true"><img class="bg-fallback" src="../assets/background-figma.png" alt=""><canvas class="bg-dither"></canvas></div>
+      <img class="top-wash" src="../assets/top-wash.svg" alt="" aria-hidden="true">
+      <div class="centered-content">
+        <header class="intro"><h1 id="academy-title">Learn how to make the most of Runable</h1><p>Runable Academy courses show you how to use Runable efficiently, make the most of your credits, and get more done for your business.</p></header>
+        <article class="lesson-panel">
+          <div class="course-unit">
+            <div class="course-header"><span class="course-name">Runable 101</span><span class="course-progress">Lesson 1 of 10</span></div>
+            <div class="course-body">
+              <a class="lesson-thumbnail" href="https://runable-academy.runable.site/lesson/runable-basics-module-1" aria-label="Watch Runable 101: Build a website"><img src="../assets/runable-101-lesson-1.jpg" alt="Runable Academy lesson preview"><span class="play-button" aria-hidden="true"></span></a>
+              <div class="course-footer"><div class="lesson-details"><h2>Build a website</h2><div class="lesson-meta"><span>15min</span><img src="../assets/metadata-dot.svg" alt=""><span>Watch first session</span></div></div><a class="academy-cta" href="https://runable-academy.runable.site/lesson/runable-basics-module-1"><span>Explore Academy</span><img src="../assets/arrow-ne.svg" alt=""></a></div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+  <script src="../assets/texture-data.js"></script><script src="../dither.js"></script><script src="../academy-layouts.js"></script>
+</body>
+</html>

@@ -9,7 +9,7 @@
     @font-face{font-family:Grotesk;src:url('assets/fonts/id-grotesk-medium.ttf') format('truetype');font-display:swap}
     *{box-sizing:border-box}
     body{display:grid;place-items:center;min-height:100svh;margin:0;padding:32px;background:#fefdfb;color:#1b140e;font-family:Grotesk,Arial,sans-serif}
-    main{width:min(860px,100%)}
+    main{width:min(860px,100%);padding-block:20px}
     .eyebrow{color:#77716d;font-size:12px;letter-spacing:.12em;text-transform:uppercase}
     h1{margin:14px 0 14px;font:400 clamp(38px,6vw,64px)/1.05 Hedvig,Georgia,serif;letter-spacing:-.04em}
     p{max-width:580px;margin:0;color:#625c55;font-size:16px;line-height:1.55}
@@ -21,6 +21,7 @@
     .choice p{font-size:14px;color:#77716d}
     .choice.dark p{color:#c3c3c3}
     .go{font-size:14px}
+    .section-label{margin:38px 0 -24px;color:#77716d;font-size:12px;letter-spacing:.1em;text-transform:uppercase}
     @media(max-width:620px){body{padding:20px}.choices{grid-template-columns:1fr;margin-top:30px}.choice{min-height:180px;gap:36px}}
   </style>
 </head>
@@ -32,6 +33,11 @@
     <div class="choices">
       <a class="choice" href="light/index.html"><div><h2>Light mode</h2><p>Runable’s light surfaces and the interactive artwork.</p></div><span class="go">Open prototype ↗</span></a>
       <a class="choice dark" href="dark/index.html"><div><h2>Dark mode</h2><p>Runable’s dark surfaces with white controls.</p></div><span class="go">Open prototype ↗</span></a>
+    </div>
+    <div class="section-label">Academy card layout comparison</div>
+    <div class="choices">
+      <a class="choice" href="layout-centered/index.html"><div><h2>Centered layout</h2><p>Figma node 20514:262374 with a centered heading and single lesson card.</p></div><span class="go">Open variant ↗</span></a>
+      <a class="choice" href="layout-split/index.html"><div><h2>Split layout</h2><p>Figma node 20543:21755 with left-aligned copy and stacked lessons.</p></div><span class="go">Open variant ↗</span></a>
     </div>
   </main>
 </body>
