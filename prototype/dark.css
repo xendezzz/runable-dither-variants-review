@@ -20,6 +20,7 @@ body,.preview-page,.runable-home{background:#212121;color:#ededed}
 .download-heading img{filter:invert(1)}
 .webinar-list{scrollbar-color:#686868 transparent}
 .sidebar{border-color:#303030;background:#171717;color:#ededed}
+.sidebar-dither{opacity:.2;mix-blend-mode:screen}
 .brandmark,.sidebar-search,.sidebar-toggle,.sidebar-link,.profile{color:#ededed}
 .sidebar-search:hover,.sidebar-toggle:hover,.sidebar-link:hover,.sidebar-link.is-current{background:#303030}
 .sidebar-heading,.sidebar-detail,.get-started span{color:#a8a8a8}
