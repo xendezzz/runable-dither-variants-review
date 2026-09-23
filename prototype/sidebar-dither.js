@@ -36,8 +36,8 @@
     const isDark = getComputedStyle(document.documentElement).colorScheme === 'dark';
     const palette = isDark ? darkPalette : lightPalette;
     const image = context.createImageData(width, height);
-    const phase = now * .000055;
-    const palettePosition = (phase * .55) % palette.length;
+    const phase = now * .00028;
+    const palettePosition = (phase * .9) % palette.length;
     const paletteIndex = Math.floor(palettePosition);
     const colorAmount = palettePosition - paletteIndex;
     const first = palette[paletteIndex];
