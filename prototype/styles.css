@@ -19,7 +19,7 @@ body{background:#f4f2ef;color:var(--ink);font-family:"ID Grotesk",Arial,sans-ser
 .top-wash{position:absolute;z-index:1;top:-126px;left:calc(50% + 42px);display:block;width:2398px;height:573px;max-width:none;transform:translateX(-50%);pointer-events:none}
 .content{position:absolute;z-index:2;top:24px;left:50%;display:flex;flex-direction:column;align-items:center;gap:18px;width:min(1000px,calc(100% - 20px));transform:translateX(-50%)}
 .intro{display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;text-align:center}
-.intro h1{width:min(422px,100%);margin:0;font:400 clamp(26px,2vw,30px)/1.08 "Hedvig Letters Serif",Georgia,serif;letter-spacing:-.6px;text-wrap:balance}
+.intro h1{width:min(422px,100%);margin:0;font:400 clamp(26px,4.5vw,30px)/1.08 "Hedvig Letters Serif",Georgia,serif;letter-spacing:-.6px;text-wrap:balance}
 .intro p{width:min(584px,100%);margin:0;font:300 clamp(13px,1vw,15px)/1.4 "ID Grotesk",Arial,sans-serif;letter-spacing:0}
 .course-carousel{--side-shift:clamp(230px,29vw,310px);position:relative;width:100%;height:282px;outline:none}
 .course-carousel:focus-visible{outline:3px solid #06a8c1;outline-offset:4px;border-radius:18px}
@@ -61,7 +61,7 @@ body{background:#f4f2ef;color:var(--ink);font-family:"ID Grotesk",Arial,sans-ser
 .webinar-stage .bg-fallback,.webinar-stage .bg-dither{transform:none}
 .webinar-layout{position:absolute;z-index:2;top:36px;left:5.3%;display:grid;grid-template-columns:minmax(0,1fr) minmax(340px,42%);column-gap:8%;width:89.4%}
 .webinar-intro{width:100%;min-width:0}
-.webinar-intro h2{width:min(422px,100%);margin:0;font:400 clamp(26px,2.1vw,32px)/1.11 "Hedvig Letters Serif",Georgia,serif;letter-spacing:-.64px;text-wrap:balance}
+.webinar-intro h2{width:min(422px,100%);margin:0;font:400 clamp(26px,4.5vw,30px)/1.11 "Hedvig Letters Serif",Georgia,serif;letter-spacing:-.6px;text-wrap:balance}
 .webinar-intro p{width:min(584px,100%);margin:16px 0 0;font:300 clamp(14px,1.1vw,16px)/1.5 "ID Grotesk",Arial,sans-serif}
 .webinar-list{display:flex;min-width:0;flex-direction:column;gap:14px;width:100%;height:428px;overflow-x:hidden;overflow-y:auto;scroll-snap-type:y proximity;scrollbar-width:thin;scrollbar-color:#bcb5ae transparent}
 .webinar-list:focus-visible{outline:3px solid #06a8c1;outline-offset:3px}
@@ -97,7 +97,7 @@ body{background:#f4f2ef;color:var(--ink);font-family:"ID Grotesk",Arial,sans-ser
 @keyframes section-reveal{from{opacity:0;filter:blur(12px);transform:translateY(16px)}to{opacity:1;filter:blur(0);transform:translateY(0)}}
 @media(max-width:1000px) and (min-width:901px){
   .webinar-intro p{width:100%}
-  .webinar-intro h2{width:100%;font-size:32px;line-height:36px}
+  .webinar-intro h2{width:100%;font-size:30px;line-height:33px}
   .webinar-intro p{font-size:14px;line-height:21px}
   .workshop-card{height:auto;min-height:190px}
   .workshop-card h3{width:100%;height:auto;font-size:19px;line-height:26px}
@@ -111,7 +111,7 @@ body{background:#f4f2ef;color:var(--ink);font-family:"ID Grotesk",Arial,sans-ser
   .top-wash{display:none}
   .content{position:relative;top:auto;left:auto;gap:16px;width:100%;padding:22px 8px 20px;transform:none}
   .intro{gap:10px}
-  .intro h1{width:min(422px,100%);font-size:clamp(25px,6.8vw,29px);line-height:1.06;letter-spacing:-.02em}
+  .intro h1{width:min(422px,100%);font-size:clamp(26px,4.5vw,30px);line-height:1.06;letter-spacing:-.02em}
   .intro p{width:min(500px,100%);font-size:13px;line-height:18px}
   .course-carousel{--side-shift:clamp(205px,50vw,275px);height:324px}
   .lesson-card{width:min(370px,calc(100% - 44px));padding:9px;border-radius:14px;will-change:auto}
@@ -122,7 +122,7 @@ body{background:#f4f2ef;color:var(--ink);font-family:"ID Grotesk",Arial,sans-ser
   .webinar-stage .bg-art{top:auto;bottom:0;height:calc(58% + 150px);min-height:550px}
   .webinar-layout{position:relative;top:auto;left:auto;display:flex;flex-direction:column;gap:16px;width:100%;padding:22px 14px 18px}
   .webinar-intro,.webinar-intro p,.webinar-list,.workshop-card{width:100%}
-  .webinar-intro h2{width:min(422px,100%);font-size:clamp(25px,7vw,30px);line-height:1.08;letter-spacing:-.02em}
+  .webinar-intro h2{width:min(422px,100%);font-size:clamp(26px,4.5vw,30px);line-height:1.08;letter-spacing:-.02em}
   .webinar-intro p{font-size:14px;line-height:21px}
   .webinar-list{gap:12px;height:270px}
   .workshop-card{min-height:190px;padding:14px;gap:8px}
