@@ -8,8 +8,7 @@ body,.preview-page,.runable-home{background:#212121;color:#ededed}
 .lesson-card,.workshop-card,.download-card{border-color:#ffffff17;background:#171717;box-shadow:0 12px 30px rgba(0,0,0,.15)}
 .lesson-card{background:rgba(23,23,23,.95)}
 .lesson-thumbnail{background:#171717}
-.lesson-heading span:last-child,.lesson-meta,.workshop-info p{color:#a8a8a8}
-.lesson-heading span:first-child{border-color:#ffffff17;background:#303030;color:#ededed}
+.lesson-meta,.workshop-info p{color:#a8a8a8}
 .workshop-benefit,.download-bottom p{color:#c3c3c3}
 .academy-cta,.claim-spot,.download-button{background:#fff;color:#030303}
 .academy-cta img,.download-button img{filter:none}
