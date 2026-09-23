@@ -8,7 +8,7 @@
   sidebar.prepend(canvas);
 
   const context = canvas.getContext('2d', { alpha: true });
-  const lightPalette = [[242, 134, 164], [155, 151, 228], [91, 184, 186], [238, 179, 111]];
+  const lightPalette = [[224, 82, 124], [112, 97, 211], [30, 151, 159], [220, 130, 47]];
   const darkPalette = [[220, 94, 143], [128, 116, 226], [63, 164, 170], [217, 139, 72]];
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const pixelSize = 2;
@@ -35,13 +35,13 @@
     particle.speed = randomBetween(.0035, .009);
     particle.wobble = randomBetween(1.2, Math.max(2, width * .055));
     particle.phase = randomBetween(0, Math.PI * 2);
-    particle.alpha = randomBetween(.4, .86);
+    particle.alpha = randomBetween(.55, .96);
     particle.paletteOffset = randomBetween(-.18, .18);
     particle.tail = Math.random() > .72 ? 2 : 1;
   }
 
   function buildParticles() {
-    const count = Math.max(44, Math.round(width * height * .009));
+    const count = Math.max(56, Math.round(width * height * .012));
     particles = Array.from({ length: count }, () => {
       const particle = {};
       resetParticle(particle, true);
@@ -81,7 +81,8 @@
       const edgeFade = Math.max(0, Math.min(1, (x / width - .58) / .42));
       const twinkle = .72 + Math.sin(now * .0011 + particle.phase) * .18;
       const color = colorAt(palette, palettePosition + particle.paletteOffset + particle.y / Math.max(1, height) * .22);
-      const alpha = particle.alpha * edgeFade * twinkle;
+      const flow = .18 + Math.pow((Math.sin(particle.y * .07 + now * .0018 + particle.phase * .35) + 1) * .5, 3) * .82;
+      const alpha = particle.alpha * edgeFade * twinkle * flow;
       if (alpha < .06) return;
 
       drawPixel(x, particle.y, color, alpha);
