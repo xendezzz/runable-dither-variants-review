@@ -1,38 +1,88 @@
 (() => {
-  const lessonCard = document.querySelector('.lesson-card');
+  const courseCarousel = document.querySelector('.course-carousel');
+  const lessonCards = [...document.querySelectorAll('.lesson-card')];
   const pointerCanHover = matchMedia('(hover: hover) and (pointer: fine)').matches;
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if (lessonCard && pointerCanHover && !reduceMotion) {
+  function clearPointerResponse(card) {
+    card.classList.remove('is-pointer-active');
+    card.style.setProperty('--card-rx', '0deg');
+    card.style.setProperty('--card-ry', '0deg');
+    card.style.setProperty('--card-glow-x', '50%');
+    card.style.setProperty('--card-glow-y', '50%');
+  }
+
+  function setActiveCourse(activeIndex) {
+    const count = lessonCards.length;
+    lessonCards.forEach((card, index) => {
+      let position = 'previous';
+      if (index === activeIndex) position = 'active';
+      else if (index === (activeIndex + 1) % count) position = 'next';
+      card.dataset.coursePosition = position;
+      card.classList.toggle('is-active', position === 'active');
+      card.setAttribute('aria-current', position === 'active' ? 'true' : 'false');
+      clearPointerResponse(card);
+    });
+  }
+
+  if (courseCarousel && lessonCards.length) {
+    let activeCourse = Math.max(0, lessonCards.findIndex(card => card.classList.contains('is-active')));
+    setActiveCourse(activeCourse);
+    lessonCards.forEach((card, index) => card.addEventListener('click', event => {
+      if (index === activeCourse) return;
+      event.preventDefault();
+      activeCourse = index;
+      setActiveCourse(activeCourse);
+    }, true));
+    courseCarousel.addEventListener('keydown', event => {
+      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+      event.preventDefault();
+      const direction = event.key === 'ArrowRight' ? 1 : -1;
+      activeCourse = (activeCourse + direction + lessonCards.length) % lessonCards.length;
+      setActiveCourse(activeCourse);
+    });
+  }
+
+  if (lessonCards.length && pointerCanHover && !reduceMotion) {
     let pointerFrame;
     let pointerX = 0;
     let pointerY = 0;
+    let pointerCard;
 
     const renderPointerResponse = () => {
-      const bounds = lessonCard.getBoundingClientRect();
+      if (!pointerCard?.classList.contains('is-active')) {
+        pointerFrame = undefined;
+        return;
+      }
+      const bounds = pointerCard.getBoundingClientRect();
       const x = Math.min(1, Math.max(0, (pointerX - bounds.left) / bounds.width));
       const y = Math.min(1, Math.max(0, (pointerY - bounds.top) / bounds.height));
-      lessonCard.style.setProperty('--card-rx', `${((.5 - y) * 3).toFixed(2)}deg`);
-      lessonCard.style.setProperty('--card-ry', `${((x - .5) * 3).toFixed(2)}deg`);
-      lessonCard.style.setProperty('--card-glow-x', `${(x * 100).toFixed(1)}%`);
-      lessonCard.style.setProperty('--card-glow-y', `${(y * 100).toFixed(1)}%`);
+      pointerCard.style.setProperty('--card-rx', `${((.5 - y) * 3).toFixed(2)}deg`);
+      pointerCard.style.setProperty('--card-ry', `${((x - .5) * 3).toFixed(2)}deg`);
+      pointerCard.style.setProperty('--card-glow-x', `${(x * 100).toFixed(1)}%`);
+      pointerCard.style.setProperty('--card-glow-y', `${(y * 100).toFixed(1)}%`);
       pointerFrame = undefined;
     };
 
-    lessonCard.addEventListener('pointerenter', () => lessonCard.classList.add('is-pointer-active'));
-    lessonCard.addEventListener('pointermove', event => {
-      pointerX = event.clientX;
-      pointerY = event.clientY;
-      if (!pointerFrame) pointerFrame = requestAnimationFrame(renderPointerResponse);
-    });
-    lessonCard.addEventListener('pointerleave', () => {
-      if (pointerFrame) cancelAnimationFrame(pointerFrame);
-      pointerFrame = undefined;
-      lessonCard.classList.remove('is-pointer-active');
-      lessonCard.style.setProperty('--card-rx', '0deg');
-      lessonCard.style.setProperty('--card-ry', '0deg');
-      lessonCard.style.setProperty('--card-glow-x', '50%');
-      lessonCard.style.setProperty('--card-glow-y', '50%');
+    lessonCards.forEach(card => {
+      card.addEventListener('pointerenter', () => {
+        if (!card.classList.contains('is-active')) return;
+        pointerCard = card;
+        card.classList.add('is-pointer-active');
+      });
+      card.addEventListener('pointermove', event => {
+        if (!card.classList.contains('is-active')) return;
+        pointerCard = card;
+        pointerX = event.clientX;
+        pointerY = event.clientY;
+        if (!pointerFrame) pointerFrame = requestAnimationFrame(renderPointerResponse);
+      });
+      card.addEventListener('pointerleave', () => {
+        if (pointerFrame) cancelAnimationFrame(pointerFrame);
+        pointerFrame = undefined;
+        clearPointerResponse(card);
+        if (pointerCard === card) pointerCard = undefined;
+      });
     });
   }
 
@@ -87,7 +137,7 @@
   const sectionPlans = [
     {
       section: document.querySelector('#academy'),
-      selector: '.intro h1, .intro p, .lesson-card, .lesson-heading, .lesson-thumbnail, .lesson-details, .academy-cta',
+      selector: '.intro h1, .intro p, .course-carousel',
       step: 105
     },
     {
