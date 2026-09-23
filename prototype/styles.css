@@ -7,8 +7,8 @@ html,body{min-height:100%;margin:0}
 html{scroll-behavior:smooth}
 body{background:#f4f2ef;color:var(--ink);font-family:"ID Grotesk",Arial,sans-serif;-webkit-font-smoothing:antialiased}
 .preview-shell{display:grid;place-items:center;padding:24px}
-.academy-card{position:relative;isolation:isolate;width:min(1512px,100%);height:500px;overflow:hidden;border:1px solid var(--border);border-radius:16px;background:var(--paper)}
-.bg-art{position:absolute;z-index:0;top:192px;left:-1px;width:calc(100% + 2px);height:603px;overflow:hidden;pointer-events:none}
+.academy-card{position:relative;isolation:isolate;width:min(1512px,100%);height:554px;overflow:hidden;border:1px solid var(--border);border-radius:16px;background:var(--paper)}
+.bg-art{position:absolute;z-index:0;top:42px;left:-1px;width:calc(100% + 2px);height:753px;overflow:hidden;pointer-events:none}
 .bg-fallback,.bg-dither{position:absolute;inset:0;display:block;width:100%;height:100%}
 .bg-fallback{object-fit:cover;filter:grayscale(1) contrast(1.55)}
 .bg-dither{display:none}
@@ -19,8 +19,8 @@ body{background:#f4f2ef;color:var(--ink);font-family:"ID Grotesk",Arial,sans-ser
 .top-wash{position:absolute;z-index:1;top:-126px;left:calc(50% + 42px);display:block;width:2398px;height:573px;max-width:none;transform:translateX(-50%);pointer-events:none}
 .content{position:absolute;z-index:2;top:24px;left:50%;display:flex;flex-direction:column;align-items:center;gap:18px;width:min(1000px,calc(100% - 20px));transform:translateX(-50%)}
 .intro{display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;text-align:center}
-.intro h1{width:min(422px,100%);margin:0;font:400 clamp(28px,2.25vw,34px)/1.08 "Hedvig Letters Serif",Georgia,serif;letter-spacing:-.68px;text-wrap:balance}
-.intro p{width:min(584px,100%);margin:0;font:500 clamp(13px,1vw,15px)/1.4 "ID Grotesk",Arial,sans-serif;letter-spacing:0}
+.intro h1{width:min(422px,100%);margin:0;font:400 clamp(26px,2vw,30px)/1.08 "Hedvig Letters Serif",Georgia,serif;letter-spacing:-.6px;text-wrap:balance}
+.intro p{width:min(584px,100%);margin:0;font:300 clamp(13px,1vw,15px)/1.4 "ID Grotesk",Arial,sans-serif;letter-spacing:0}
 .course-carousel{--side-shift:clamp(230px,29vw,310px);position:relative;width:100%;height:282px;outline:none}
 .course-carousel:focus-visible{outline:3px solid #06a8c1;outline-offset:4px;border-radius:18px}
 .lesson-card{--card-rx:0deg;--card-ry:0deg;--card-glow-x:50%;--card-glow-y:50%;--course-x:0px;--course-scale:.84;position:absolute;top:0;left:50%;display:flex;flex-direction:column;gap:8px;width:min(380px,calc(100% - 44px));padding:10px;border:.5px solid var(--border);border-radius:14px;background:rgba(249,249,248,.95);box-shadow:inset 0 -5px 4px rgba(255,255,255,.25),0 8px 22px rgba(24,15,8,.04);filter:blur(2.4px);opacity:.52;transform:translateX(calc(-50% + var(--course-x))) scale(var(--course-scale)) perspective(900px) rotateX(var(--card-rx)) rotateY(var(--card-ry));transform-style:preserve-3d;transition:transform .48s cubic-bezier(.2,.75,.2,1),filter .42s ease,opacity .42s ease,box-shadow .3s ease;will-change:transform,filter;cursor:pointer}
@@ -57,12 +57,12 @@ body{background:#f4f2ef;color:var(--ink);font-family:"ID Grotesk",Arial,sans-ser
 .academy-cta img{display:block;width:16px;height:16px;filter:invert(1)}
 .academy-cta:hover{background:#33261d;box-shadow:0 5px 14px rgba(24,15,8,.2);transform:translateY(-1px)}
 .academy-cta:active{background:#180f08;box-shadow:none;transform:none}
-.webinar-stage .bg-art{top:99px;height:763px}
+.webinar-stage .bg-art{top:-51px;height:913px}
 .webinar-stage .bg-fallback,.webinar-stage .bg-dither{transform:none}
 .webinar-layout{position:absolute;z-index:2;top:36px;left:5.3%;display:grid;grid-template-columns:minmax(0,1fr) minmax(340px,42%);column-gap:8%;width:89.4%}
 .webinar-intro{width:100%;min-width:0}
-.webinar-intro h2{width:min(422px,100%);margin:0;font:400 clamp(30px,2.4vw,36px)/1.11 "Hedvig Letters Serif",Georgia,serif;letter-spacing:-.72px;text-wrap:balance}
-.webinar-intro p{width:min(584px,100%);margin:16px 0 0;font:500 clamp(14px,1.1vw,16px)/1.5 "ID Grotesk",Arial,sans-serif}
+.webinar-intro h2{width:min(422px,100%);margin:0;font:400 clamp(26px,2.1vw,32px)/1.11 "Hedvig Letters Serif",Georgia,serif;letter-spacing:-.64px;text-wrap:balance}
+.webinar-intro p{width:min(584px,100%);margin:16px 0 0;font:300 clamp(14px,1.1vw,16px)/1.5 "ID Grotesk",Arial,sans-serif}
 .webinar-list{display:flex;min-width:0;flex-direction:column;gap:14px;width:100%;height:428px;overflow-x:hidden;overflow-y:auto;scroll-snap-type:y proximity;scrollbar-width:thin;scrollbar-color:#bcb5ae transparent}
 .webinar-list:focus-visible{outline:3px solid #06a8c1;outline-offset:3px}
 .workshop-card{display:flex;min-width:0;flex:none;flex-direction:column;gap:8px;width:100%;min-height:190px;padding:16px;border:1px solid var(--border);border-radius:14px;background:#fff;box-shadow:inset 0 -5px 4px rgba(255,255,255,.25);scroll-snap-align:start}
@@ -74,16 +74,16 @@ body{background:#f4f2ef;color:var(--ink);font-family:"ID Grotesk",Arial,sans-ser
 .claim-spot:hover{background:#33261d;box-shadow:0 5px 14px rgba(24,15,8,.2);transform:translateY(-1px)}
 .claim-spot:active{background:#180f08;box-shadow:none;transform:none}
 .claim-spot:focus-visible{outline:3px solid #06a8c1;outline-offset:3px}
-.desktop-stage .bg-art{top:280px;height:850px;-webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 18%);mask-image:linear-gradient(to bottom,transparent 0%,#000 18%)}
+.desktop-stage .bg-art{top:130px;height:1000px;-webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 18%);mask-image:linear-gradient(to bottom,transparent 0%,#000 18%)}
 .desktop-content{position:absolute;z-index:2;top:36px;left:50%;display:flex;flex-direction:column;align-items:center;gap:24px;width:min(800px,calc(100% - 36px));transform:translateX(-50%)}
-.desktop-content h2{max-width:100%;margin:0;font:400 clamp(30px,2.4vw,36px)/1.11 "Hedvig Letters Serif",Georgia,serif;letter-spacing:-.72px;text-align:center;text-wrap:balance}
+.desktop-content h2{max-width:100%;margin:0;font:400 clamp(26px,2.1vw,32px)/1.11 "Hedvig Letters Serif",Georgia,serif;letter-spacing:-.64px;text-align:center;text-wrap:balance}
 .desktop-downloads{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;width:100%}
 .download-card{display:flex;flex-direction:column;justify-content:space-between;gap:16px;min-width:0;min-height:176px;padding:16px;border:1px solid var(--border);border-radius:14px;background:#fff}
 .download-heading{display:flex;align-items:center;gap:12px;min-width:0}
 .download-heading img{display:block;width:28px;height:28px;flex:none;object-fit:contain}
 .download-heading h3{margin:0;font:400 clamp(22px,2vw,28px)/1.2 "Hedvig Letters Serif",Georgia,serif}
 .download-bottom{display:flex;flex-direction:column;gap:16px;width:100%}
-.download-bottom p{min-height:22px;margin:0;color:#494743;font:500 clamp(13px,1.05vw,15px)/1.45 "ID Grotesk",Arial,sans-serif}
+.download-bottom p{min-height:22px;margin:0;color:#494743;font:300 clamp(13px,1.05vw,15px)/1.45 "ID Grotesk",Arial,sans-serif}
 .download-button,.coming-soon{display:inline-flex;align-items:center;justify-content:center;gap:5px;width:100%;min-height:36px;padding:6px 12px;border-radius:12px;font:500 14px/20px "ID Grotesk",Arial,sans-serif;text-decoration:none}
 .download-button{background:#180f08;color:#fefdfb;transition:background .2s ease,transform .2s ease}
 .download-button img{width:16px;height:16px;filter:invert(1)}
@@ -105,13 +105,13 @@ body{background:#f4f2ef;color:var(--ink);font-family:"ID Grotesk",Arial,sans-ser
 }
 @media(max-width:900px){
   .preview-shell{padding:12px}
-  .academy-card{width:100%;height:500px;min-height:0;border-radius:16px}
-  .bg-art{top:auto;bottom:0;left:0;width:100%;height:55%;min-height:360px;-webkit-mask-image:linear-gradient(to bottom,transparent,#000 42%);mask-image:linear-gradient(to bottom,transparent,#000 42%)}
+  .academy-card{width:100%;height:554px;min-height:0;border-radius:16px}
+  .bg-art{top:auto;bottom:0;left:0;width:100%;height:calc(55% + 150px);min-height:510px;-webkit-mask-image:linear-gradient(to bottom,transparent,#000 42%);mask-image:linear-gradient(to bottom,transparent,#000 42%)}
   .bg-fallback{object-position:42% center}
   .top-wash{display:none}
   .content{position:relative;top:auto;left:auto;gap:16px;width:100%;padding:22px 8px 20px;transform:none}
   .intro{gap:10px}
-  .intro h1{width:min(422px,100%);font-size:clamp(27px,7.4vw,32px);line-height:1.06;letter-spacing:-.02em}
+  .intro h1{width:min(422px,100%);font-size:clamp(25px,6.8vw,29px);line-height:1.06;letter-spacing:-.02em}
   .intro p{width:min(500px,100%);font-size:13px;line-height:18px}
   .course-carousel{--side-shift:clamp(205px,50vw,275px);height:324px}
   .lesson-card{width:min(370px,calc(100% - 44px));padding:9px;border-radius:14px;will-change:auto}
@@ -119,17 +119,17 @@ body{background:#f4f2ef;color:var(--ink);font-family:"ID Grotesk",Arial,sans-ser
   .lesson-thumbnail{height:auto;aspect-ratio:16/9;border-radius:12px}
   .lesson-footer{height:auto;margin-top:0;align-items:flex-start;flex-wrap:wrap}
   .lesson-details{padding-left:0}
-  .webinar-stage .bg-art{top:auto;bottom:0;height:58%;min-height:400px}
+  .webinar-stage .bg-art{top:auto;bottom:0;height:calc(58% + 150px);min-height:550px}
   .webinar-layout{position:relative;top:auto;left:auto;display:flex;flex-direction:column;gap:16px;width:100%;padding:22px 14px 18px}
   .webinar-intro,.webinar-intro p,.webinar-list,.workshop-card{width:100%}
-  .webinar-intro h2{width:min(422px,100%);font-size:clamp(29px,8vw,36px);line-height:1.08;letter-spacing:-.02em}
+  .webinar-intro h2{width:min(422px,100%);font-size:clamp(25px,7vw,30px);line-height:1.08;letter-spacing:-.02em}
   .webinar-intro p{font-size:14px;line-height:21px}
   .webinar-list{gap:12px;height:270px}
   .workshop-card{min-height:190px;padding:14px;gap:8px}
   .workshop-card h3{width:100%;height:auto}
   .workshop-benefit{font-size:14px;line-height:20px}
   .workshop-info p{font-size:14px;line-height:21px;white-space:normal}
-  .desktop-stage .bg-art{top:auto;bottom:0;height:55%;min-height:360px}
+  .desktop-stage .bg-art{top:auto;bottom:0;height:calc(55% + 150px);min-height:510px}
   .desktop-content{position:relative;top:auto;left:auto;gap:20px;width:100%;padding:24px 14px;transform:none}
   .desktop-downloads{gap:16px}
   .download-card{min-height:170px;padding:14px}
