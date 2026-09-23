@@ -35,13 +35,13 @@
     particle.speed = randomBetween(.0035, .009);
     particle.wobble = randomBetween(1.2, Math.max(2, width * .055));
     particle.phase = randomBetween(0, Math.PI * 2);
-    particle.alpha = randomBetween(.28, .7);
+    particle.alpha = randomBetween(.4, .86);
     particle.paletteOffset = randomBetween(-.18, .18);
     particle.tail = Math.random() > .72 ? 2 : 1;
   }
 
   function buildParticles() {
-    const count = Math.max(32, Math.round(width * height * .005));
+    const count = Math.max(44, Math.round(width * height * .009));
     particles = Array.from({ length: count }, () => {
       const particle = {};
       resetParticle(particle, true);

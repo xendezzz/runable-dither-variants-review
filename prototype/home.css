@@ -2,7 +2,7 @@
 body:not(.nav-open){--rail:64px}
 .app-main{min-width:0;margin-left:var(--rail);transition:margin-left .3s ease}
 .sidebar{position:fixed;z-index:30;inset:0 auto 0 0;display:flex;flex-direction:column;width:var(--rail);padding:15px 10px;background:#fcfaf9;border-right:1px solid #eee9e6;overflow:hidden;transition:width .3s ease;white-space:nowrap}
-.sidebar-dither{position:absolute;z-index:0;inset:0;display:block;width:100%;height:100%;opacity:.15;image-rendering:pixelated;pointer-events:none;-webkit-mask-image:linear-gradient(to right,transparent 0%,transparent 57%,rgba(0,0,0,.16) 72%,#000 100%);mask-image:linear-gradient(to right,transparent 0%,transparent 57%,rgba(0,0,0,.16) 72%,#000 100%)}
+.sidebar-dither{position:absolute;z-index:0;inset:0;display:block;width:100%;height:100%;opacity:.22;image-rendering:pixelated;pointer-events:none;-webkit-mask-image:linear-gradient(to right,transparent 0%,transparent 60%,rgba(0,0,0,.18) 74%,#000 100%);mask-image:linear-gradient(to right,transparent 0%,transparent 60%,rgba(0,0,0,.18) 74%,#000 100%)}
 .sidebar>:not(.sidebar-dither){position:relative;z-index:1}
 .sidebar-top{display:flex;align-items:center;gap:8px;height:34px;margin:0 5px 19px}
 .brandmark{display:grid;place-items:center;width:26px;height:26px;flex:none;color:#1b1714}
