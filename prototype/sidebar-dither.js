@@ -32,7 +32,7 @@
   function resetParticle(particle, initial = false) {
     particle.anchorX = randomBetween(width * .68, width * 1.02);
     particle.y = initial ? randomBetween(-4, height + 4) : height + randomBetween(1, 18);
-    particle.speed = randomBetween(.0035, .009);
+    particle.speed = randomBetween(.00175, .0045);
     particle.wobble = randomBetween(1.2, Math.max(2, width * .055));
     particle.phase = randomBetween(0, Math.PI * 2);
     particle.alpha = randomBetween(.55, .96);
@@ -70,18 +70,18 @@
   function render(now, delta) {
     const isDark = getComputedStyle(document.documentElement).colorScheme === 'dark';
     const palette = isDark ? darkPalette : lightPalette;
-    const palettePosition = now * .00018;
+    const palettePosition = now * .00009;
     context.clearRect(0, 0, width, height);
 
     particles.forEach(particle => {
       if (!reducedMotion) particle.y -= particle.speed * delta;
       if (particle.y < -5) resetParticle(particle);
 
-      const x = particle.anchorX + Math.sin(now * .00075 + particle.phase) * particle.wobble + Math.cos(particle.y * .055 + particle.phase) * 1.2;
+      const x = particle.anchorX + Math.sin(now * .000375 + particle.phase) * particle.wobble + Math.cos(particle.y * .055 + particle.phase) * 1.2;
       const edgeFade = Math.max(0, Math.min(1, (x / width - .58) / .42));
-      const twinkle = .72 + Math.sin(now * .0011 + particle.phase) * .18;
+      const twinkle = .72 + Math.sin(now * .00055 + particle.phase) * .18;
       const color = colorAt(palette, palettePosition + particle.paletteOffset + particle.y / Math.max(1, height) * .22);
-      const flow = .18 + Math.pow((Math.sin(particle.y * .07 + now * .0018 + particle.phase * .35) + 1) * .5, 3) * .82;
+      const flow = .18 + Math.pow((Math.sin(particle.y * .07 + now * .0009 + particle.phase * .35) + 1) * .5, 3) * .82;
       const alpha = particle.alpha * edgeFade * twinkle * flow;
       if (alpha < .06) return;
 
