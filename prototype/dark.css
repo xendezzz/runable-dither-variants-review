@@ -7,6 +7,8 @@ body,.preview-page,.runable-home{background:#212121;color:#ededed}
 .top-wash{display:none}
 .lesson-card,.workshop-card,.download-card{border-color:#ffffff17;background:#171717;box-shadow:0 12px 30px rgba(0,0,0,.15)}
 .lesson-card{background:rgba(23,23,23,.95)}
+.course-arrow{border-color:#ffffff20;background:rgba(23,23,23,.94);box-shadow:0 7px 20px rgba(0,0,0,.28);color:#ededed}
+.course-arrow:hover{background:#303030;box-shadow:0 9px 24px rgba(0,0,0,.36)}
 .lesson-thumbnail{background:#171717}
 .lesson-meta,.workshop-info p{color:#a8a8a8}
 .workshop-benefit,.download-bottom p{color:#c3c3c3}

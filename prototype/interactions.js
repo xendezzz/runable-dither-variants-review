@@ -27,20 +27,70 @@
 
   if (courseCarousel && lessonCards.length) {
     let activeCourse = Math.max(0, lessonCards.findIndex(card => card.classList.contains('is-active')));
+    let rotationTimer;
+    let carouselVisible = true;
+    let interactionPaused = false;
+
+    const stopRotation = () => {
+      clearTimeout(rotationTimer);
+      rotationTimer = undefined;
+    };
+    const scheduleRotation = () => {
+      stopRotation();
+      if (reduceMotion || interactionPaused || !carouselVisible || document.hidden) return;
+      rotationTimer = setTimeout(() => {
+        activeCourse = (activeCourse + 1) % lessonCards.length;
+        setActiveCourse(activeCourse);
+        scheduleRotation();
+      }, 4800);
+    };
+    const moveCourse = direction => {
+      activeCourse = (activeCourse + direction + lessonCards.length) % lessonCards.length;
+      setActiveCourse(activeCourse);
+      scheduleRotation();
+    };
+
     setActiveCourse(activeCourse);
     lessonCards.forEach((card, index) => card.addEventListener('click', event => {
       if (index === activeCourse) return;
       event.preventDefault();
       activeCourse = index;
       setActiveCourse(activeCourse);
+      scheduleRotation();
     }, true));
+    courseCarousel.querySelector('.course-prev')?.addEventListener('click', () => moveCourse(-1));
+    courseCarousel.querySelector('.course-next')?.addEventListener('click', () => moveCourse(1));
     courseCarousel.addEventListener('keydown', event => {
       if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
       event.preventDefault();
       const direction = event.key === 'ArrowRight' ? 1 : -1;
-      activeCourse = (activeCourse + direction + lessonCards.length) % lessonCards.length;
-      setActiveCourse(activeCourse);
+      moveCourse(direction);
     });
+    courseCarousel.addEventListener('pointerenter', () => {
+      interactionPaused = true;
+      stopRotation();
+    });
+    courseCarousel.addEventListener('pointerleave', () => {
+      interactionPaused = false;
+      scheduleRotation();
+    });
+    courseCarousel.addEventListener('focusin', () => {
+      interactionPaused = true;
+      stopRotation();
+    });
+    courseCarousel.addEventListener('focusout', event => {
+      if (courseCarousel.contains(event.relatedTarget)) return;
+      interactionPaused = false;
+      scheduleRotation();
+    });
+    document.addEventListener('visibilitychange', scheduleRotation);
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(entries => {
+        carouselVisible = Boolean(entries[0]?.isIntersecting && entries[0].intersectionRatio >= .25);
+        scheduleRotation();
+      }, { threshold: [.25] }).observe(courseCarousel);
+    }
+    scheduleRotation();
   }
 
   if (lessonCards.length && pointerCanHover && !reduceMotion) {
