@@ -1,4 +1,41 @@
 (() => {
+  const lessonCard = document.querySelector('.lesson-card');
+  const pointerCanHover = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (lessonCard && pointerCanHover && !reduceMotion) {
+    let pointerFrame;
+    let pointerX = 0;
+    let pointerY = 0;
+
+    const renderPointerResponse = () => {
+      const bounds = lessonCard.getBoundingClientRect();
+      const x = Math.min(1, Math.max(0, (pointerX - bounds.left) / bounds.width));
+      const y = Math.min(1, Math.max(0, (pointerY - bounds.top) / bounds.height));
+      lessonCard.style.setProperty('--card-rx', `${((.5 - y) * 3).toFixed(2)}deg`);
+      lessonCard.style.setProperty('--card-ry', `${((x - .5) * 3).toFixed(2)}deg`);
+      lessonCard.style.setProperty('--card-glow-x', `${(x * 100).toFixed(1)}%`);
+      lessonCard.style.setProperty('--card-glow-y', `${(y * 100).toFixed(1)}%`);
+      pointerFrame = undefined;
+    };
+
+    lessonCard.addEventListener('pointerenter', () => lessonCard.classList.add('is-pointer-active'));
+    lessonCard.addEventListener('pointermove', event => {
+      pointerX = event.clientX;
+      pointerY = event.clientY;
+      if (!pointerFrame) pointerFrame = requestAnimationFrame(renderPointerResponse);
+    });
+    lessonCard.addEventListener('pointerleave', () => {
+      if (pointerFrame) cancelAnimationFrame(pointerFrame);
+      pointerFrame = undefined;
+      lessonCard.classList.remove('is-pointer-active');
+      lessonCard.style.setProperty('--card-rx', '0deg');
+      lessonCard.style.setProperty('--card-ry', '0deg');
+      lessonCard.style.setProperty('--card-glow-x', '50%');
+      lessonCard.style.setProperty('--card-glow-y', '50%');
+    });
+  }
+
   const notice = document.querySelector('.prototype-notice');
   let timer;
   document.querySelectorAll('.claim-spot').forEach(button => {
